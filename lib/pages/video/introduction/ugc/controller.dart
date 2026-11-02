@@ -41,6 +41,7 @@ import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/utils/share_utils.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
+import 'package:PiliPlus/utils/ugc_resume.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -78,6 +79,13 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
   int get partIndex => _partIndex;
   final indexNotifier = ValueNotifier(null);
 
+  /// 续播判断只做一次，避免简介刷新时反复跳集
+  bool _resumeChecked = false;
+
+  /// 定期把「看到第几集、第几秒」写回本地
+  Timer? _resumeTimer;
+  int _lastSavedPositionMs = 0;
+
   @override
   void onInit() {
     super.onInit();
@@ -91,6 +99,92 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
       });
     }
     videoDetail.value.title = Get.arguments['title'] ?? '';
+    _resumeTimer = Timer.periodic(
+      const Duration(seconds: 15),
+      (_) => _saveCurrentProgress(),
+    );
+  }
+
+  /// 写入一条续播记录；不传进度时按「刚切到这一集，从 0 开始」处理
+  void _saveResumePoint({int positionMs = 0}) {
+    try {
+      final seasonId = videoDetail.value.ugcSeason?.id;
+      if (seasonId == null) return;
+      final curBvid = bvid;
+      if (curBvid.isEmpty) return;
+      UgcResume.save(
+        seasonId: seasonId,
+        bvid: curBvid,
+        cid: cid.rawValue,
+        positionMs: positionMs,
+      );
+    } catch (_) {}
+  }
+
+  /// 只在进度明显变化时才落盘，减少 Hive 写入；[force] 用于退出时强制补写
+  void _saveCurrentProgress({bool force = false}) {
+    try {
+      if (videoDetail.value.ugcSeason?.id == null) return;
+      final positionMs =
+          videoDetailCtr.plPlayerController.positionInMilliseconds;
+      if (positionMs <= 0) return;
+      if (!force && (positionMs - _lastSavedPositionMs).abs() < 10000) return;
+      _lastSavedPositionMs = positionMs;
+      _saveResumePoint(positionMs: positionMs);
+    } catch (_) {}
+  }
+
+  /// 自动接上合集里上次看的那一集。
+  ///
+  /// 只在「从合集第一集进入」时触发，点到其他集不会被劫持，
+  /// 因为那说明用户就是想看那一集。
+  void _maybeResumeSeason(VideoDetailData data) {
+    if (_resumeChecked) return;
+    try {
+      if (videoDetailCtr.isPlayAll || videoDetailCtr.isFileSource) return;
+      final season = data.ugcSeason;
+      final seasonId = season?.id;
+      final sections = season?.sections;
+      if (seasonId == null || sections == null || sections.isEmpty) return;
+      final firstEpisodes = sections.first.episodes;
+      if (firstEpisodes == null || firstEpisodes.isEmpty) return;
+      // 第一次没拿到合集信息时不要锁定，留给后续刷新再判断
+      if (firstEpisodes.first.bvid != bvid) return;
+      _resumeChecked = true;
+
+      final point = UgcResume.read(seasonId);
+      if (point == null || point.bvid == bvid) return;
+
+      BaseEpisodeItem? target;
+      var targetIndex = 0;
+      for (final section in sections) {
+        final episodes = section.episodes;
+        if (episodes == null) continue;
+        for (final (index, episode) in episodes.indexed) {
+          if (episode.bvid == point.bvid) {
+            target = episode;
+            targetIndex = index;
+            break;
+          }
+        }
+        if (target != null) break;
+      }
+      // 合集被 UP 改过、那一集已经不在了：安静放弃，正常播第一集
+      if (target == null) return;
+
+      unawaited(
+        onChangeEpisode(
+          target,
+          resumePositionMs: point.positionMs,
+        ).then((ok) {
+          if (ok) {
+            SmartDialog.showToast('已续播到上次观看的第 ${targetIndex + 1} 集');
+          }
+        }),
+      );
+    } catch (e) {
+      if (kDebugMode) debugPrint('ugc resume: $e');
+    }
   }
 
   // 获取视频简介&分p
@@ -125,6 +219,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
       }
       videoDetail.value = response;
       updateIndex(data: response);
+      _maybeResumeSeason(response);
       try {
         if (videoDetailCtr.cover.value.isEmpty ||
             (videoDetailCtr.videoUrl.isNullOrEmpty &&
@@ -512,6 +607,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
   Future<bool> onChangeEpisode(
     BaseEpisodeItem episode, {
     bool isStein = false,
+    int? resumePositionMs,
   }) async {
     try {
       final String bvid = episode.bvid ?? this.bvid;
@@ -559,6 +655,10 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
         ..bvid = bvid
         ..aid = aid
         ..cid.value = cid
+        // onReset 会清空，必须放在它之后；_queryVideoUrl 会保留这里的非空值
+        ..defaultST = resumePositionMs == null
+            ? null
+            : Duration(milliseconds: resumePositionMs)
         ..queryVideoUrl();
 
       if (lastBvid != bvid) {
@@ -604,6 +704,9 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
         }
       }
 
+      // 记住「看到第几集」，下次从第一集进入时自动接上
+      _lastSavedPositionMs = resumePositionMs ?? 0;
+      _saveResumePoint(positionMs: _lastSavedPositionMs);
       queryOnlineTotal();
       return true;
     } catch (e) {
@@ -816,6 +919,10 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
   @override
   void onClose() {
     indexNotifier.dispose();
+    _resumeTimer?.cancel();
+    _resumeTimer = null;
+    // 退出时不受 10 秒阈值限制，补写一次当前进度
+    _saveCurrentProgress(force: true);
     super.onClose();
   }
 }

@@ -884,7 +884,8 @@ class VideoDetailController extends GetxController
         final progress = args.remove('progress');
         if (progress != null) {
           defaultST = Duration(milliseconds: progress);
-        } else {
+        } else if (defaultST == null) {
+          // 非空说明是合集跨集续播指定的位置，不能用服务端历史盖掉
           defaultST = Duration(milliseconds: data.lastPlayTime);
         }
       }
