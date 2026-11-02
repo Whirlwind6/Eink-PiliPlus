@@ -22,6 +22,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart' hide ListTile;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class WhisperSessionItem extends StatelessWidget {
   const WhisperSessionItem({
@@ -81,7 +82,7 @@ class WhisperSessionItem extends StatelessWidget {
               alpha: theme.isDark ? 0.4 : 0.8,
             )
           : null,
-      onLongPress: () => showDialog(
+      onLongPress: () => showEinkDialog(
         context: context,
         builder: (_) => SimpleDialog(
           clipBehavior: .hardEdge,

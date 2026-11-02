@@ -12,6 +12,7 @@ import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:collection/collection.dart' show IterableExtension;
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 part 'package:PiliPlus/common/widgets/context_menu/dyn_menu_helper.dart';
 

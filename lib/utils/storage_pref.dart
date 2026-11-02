@@ -96,9 +96,9 @@ abstract final class Pref {
 
   static ThemeType get themeType => ThemeType.values[_themeTypeInt];
 
-  /// 墨水屏优化总开关
+  /// 墨水屏优化总开关（墨水屏版本默认开启）
   static bool get einkMode =>
-      _setting.get(SettingBoxKey.einkMode, defaultValue: false);
+      _setting.get(SettingBoxKey.einkMode, defaultValue: true);
 
   /// 隐藏封面/内容图片（默认开启，配合墨水屏模式使用）
   static bool get einkHideCover =>
@@ -702,8 +702,9 @@ abstract final class Pref {
   static bool get enableVerticalExpand =>
       _setting.get(SettingBoxKey.enableVerticalExpand, defaultValue: false);
 
+  /// 全局字体缩放（墨水屏默认放大到 1.5，小字在电子墨水屏上几乎糊成一团）
   static double get defaultTextScale =>
-      _setting.get(SettingBoxKey.defaultTextScale, defaultValue: 1.0);
+      _setting.get(SettingBoxKey.defaultTextScale, defaultValue: 1.5);
 
   static double get uiScale =>
       _setting.get(SettingBoxKey.uiScale, defaultValue: 1.0);

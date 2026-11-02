@@ -1,5 +1,6 @@
 import 'package:PiliPlus/common/style.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink.dart';
 
 Widget selectMask(
   ColorScheme colorScheme,
@@ -13,7 +14,10 @@ Widget selectMask(
       alignment: Alignment.center,
       decoration: BoxDecoration(
         borderRadius: borderRadius,
-        color: Colors.black.withValues(alpha: 0.6),
+        // 墨水屏下 60% 黑蒙层会变成一片深灰，改成浅灰
+        color: Eink.enabled
+            ? const Color(0xFFDCDCDC)
+            : Colors.black.withValues(alpha: 0.6),
       ),
       child: AnimatedScale(
         scale: checked ? 1 : 0,

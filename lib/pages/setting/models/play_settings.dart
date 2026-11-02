@@ -27,6 +27,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 List<SettingsModel> get playSettings => [
   NormalModel(
@@ -419,7 +420,7 @@ Future<void> _showSubtitleDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<SubtitlePrefType>(
+  final res = await showEinkDialog<SubtitlePrefType>(
     context: context,
     builder: (context) => SelectDialog<SubtitlePrefType>(
       title: '字幕选择偏好',
@@ -440,7 +441,7 @@ Future<void> _showFullScreenModeDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<FullScreenMode>(
+  final res = await showEinkDialog<FullScreenMode>(
     context: context,
     builder: (context) => SelectDialog<FullScreenMode>(
       title: '默认全屏方向',
@@ -458,7 +459,7 @@ Future<void> _showAngleDegreesDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<double>(
+  final res = await showEinkDialog<double>(
     context: context,
     builder: (context) => SliderDialog(
       title: const Text('倾斜角度阈值'),
@@ -523,7 +524,7 @@ Future<void> showVolumeDialog(
   required double value,
   required ValueChanged<double> onChanged,
 }) async {
-  final res = await showDialog<double>(
+  final res = await showEinkDialog<double>(
     context: context,
     builder: (context) => SliderDialog(
       title: title,
@@ -544,7 +545,7 @@ Future<void> _showSuperResolutionDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<SuperResolutionType>(
+  final res = await showEinkDialog<SuperResolutionType>(
     context: context,
     builder: (context) => SelectDialog<SuperResolutionType>(
       title: '超分辨率',
@@ -569,7 +570,7 @@ Future<void> audioNormalization(
   final key = fallback
       ? SettingBoxKey.fallbackNormalization
       : SettingBoxKey.audioNormalization;
-  final res = await showDialog<String>(
+  final res = await showEinkDialog<String>(
     context: context,
     builder: (context) {
       String audioNormalization = fallback
@@ -606,7 +607,7 @@ Future<void> audioNormalization(
   if (res != null && context.mounted) {
     if (res == '3') {
       String param = '';
-      await showDialog(
+      await showEinkDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('自定义参数'),

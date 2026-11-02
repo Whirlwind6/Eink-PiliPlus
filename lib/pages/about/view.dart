@@ -27,6 +27,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart' hide ListTile;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key, this.showAppBar = true});
@@ -64,7 +65,7 @@ class _AboutPageState extends State<AboutPage> {
     });
   }
 
-  void _showDialog() => showDialog(
+  void _showEinkDialog() => showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       constraints: Style.dialogFixedConstraints,
@@ -101,7 +102,7 @@ class _AboutPageState extends State<AboutPage> {
             onTap: () {
               if (++_pressCount == 5) {
                 _pressCount = 0;
-                _showDialog();
+                _showEinkDialog();
               }
             },
             onSecondaryTap: PlatformUtils.isDesktop ? _showDialog : null,
@@ -264,7 +265,7 @@ Commit Hash: ${BuildConfig.commitHash}''',
           ListTile(
             title: const Text('重置所有设置'),
             leading: const Icon(Icons.settings_backup_restore_outlined),
-            onTap: () => showDialog(
+            onTap: () => showEinkDialog(
               context: context,
               builder: (context) {
                 return SimpleDialog(

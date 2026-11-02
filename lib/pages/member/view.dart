@@ -49,6 +49,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class MemberPage extends StatefulWidget {
   const MemberPage({super.key});
@@ -612,7 +613,7 @@ class _MemberPageState extends State<MemberPage> {
   Future<void> _showFollowTime() async {
     void onShow() {
       if (!mounted) return;
-      showDialog(
+      showEinkDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: Text(_userController.username ?? ''),
@@ -651,7 +652,7 @@ class _MemberPageState extends State<MemberPage> {
   Future<void> _showLiveMedalWall() async {
     void onShow() {
       if (!mounted) return;
-      showDialog(
+      showEinkDialog(
         context: context,
         builder: (context) => MedalWall(response: _cacheMedalData!),
       );

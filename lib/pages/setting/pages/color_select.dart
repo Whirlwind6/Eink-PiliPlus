@@ -24,6 +24,7 @@ import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class ColorSelectPage extends StatefulWidget {
   const ColorSelectPage({super.key});
@@ -88,7 +89,7 @@ class _ColorSelectPageState extends State<ColorSelectPage> {
         children: [
           ListTile(
             onTap: () async {
-              final result = await showDialog<ThemeType>(
+              final result = await showEinkDialog<ThemeType>(
                 context: context,
                 builder: (context) => SelectDialog<ThemeType>(
                   title: '主题模式',
@@ -204,7 +205,7 @@ class _ColorSelectPageState extends State<ColorSelectPage> {
               return GestureDetector(
                 behavior: .opaque,
                 onTap: () {
-                  showDialog(
+                  showEinkDialog(
                     context: context,
                     builder: (context) => AlertDialog(
                       clipBehavior: .hardEdge,

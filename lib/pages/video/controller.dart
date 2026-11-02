@@ -77,6 +77,7 @@ import 'package:get/get.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:media_kit/media_kit.dart' hide Subtitle;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class VideoDetailController extends GetxController
     with GetTickerProviderStateMixin, BlockMixin {
@@ -1522,7 +1523,7 @@ class VideoDetailController extends GetxController
         border: const OutlineInputBorder(),
       ),
     );
-    showDialog(
+    showEinkDialog(
       context: Get.context!,
       builder: (context) => AlertDialog(
         constraints: Style.dialogFixedConstraints,

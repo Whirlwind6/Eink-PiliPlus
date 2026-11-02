@@ -20,6 +20,7 @@ import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart' hide ListTile;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class LikeMePage extends StatefulWidget {
   const LikeMePage({super.key});
@@ -199,7 +200,7 @@ class _LikeMePageState extends State<LikeMePage> {
         ),
       );
     }
-    void onLongPress() => showDialog(
+    void onLongPress() => showEinkDialog(
       context: context,
       builder: (context) {
         final isNotice = item.noticeState == 0;

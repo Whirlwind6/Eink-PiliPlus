@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:flutter/semantics.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -210,7 +211,10 @@ class RenderPlay extends RenderBox {
     canvas.drawPath(path, paint);
 
     paint
-      ..color = Colors.white.withValues(alpha: 0.8)
+      // 墨水屏下封面/画面都是白块，白色图标会直接消失
+      ..color = Eink.enabled
+          ? const Color(0xFF333333).withValues(alpha: 0.85)
+          : Colors.white.withValues(alpha: 0.8)
       ..maskFilter = null;
 
     canvas.drawPath(path, paint);

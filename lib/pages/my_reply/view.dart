@@ -23,6 +23,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class MyReply extends StatefulWidget {
   const MyReply({super.key});
@@ -194,7 +195,7 @@ class _MyReplyState extends State<MyReply> with DynMixin {
 
   void _showExportDialog() {
     const style = TextStyle(fontSize: 14);
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => SimpleDialog(
         clipBehavior: .hardEdge,
@@ -234,7 +235,7 @@ class _MyReplyState extends State<MyReply> with DynMixin {
 
   void _showImportDialog() {
     const style = TextStyle(fontSize: 14);
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => SimpleDialog(
         clipBehavior: .hardEdge,

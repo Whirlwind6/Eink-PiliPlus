@@ -35,6 +35,7 @@ import 'package:PiliPlus/plugin/pl_player/utils/fullscreen.dart';
 import 'package:PiliPlus/plugin/pl_player/view/view.dart';
 import 'package:PiliPlus/services/service_locator.dart';
 import 'package:PiliPlus/utils/android/bindings.g.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
@@ -421,7 +422,14 @@ class _LiveRoomPageState extends State<LiveRoomPage>
       return Stack(
         clipBehavior: Clip.none,
         children: [
-          const SizedBox.expand(child: ColoredBox(color: Colors.black)),
+          // 墨水屏下整页黑底会糊成一片深灰，改成主题表面色
+          SizedBox.expand(
+            child: ColoredBox(
+              color: Eink.enabled
+                  ? ColorScheme.of(context).surface
+                  : Colors.black,
+            ),
+          ),
           if (!isFullScreen)
             Obx(
               () {

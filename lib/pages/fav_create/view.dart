@@ -19,6 +19,7 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class CreateFavPage extends StatefulWidget {
   const CreateFavPage({super.key});
@@ -187,7 +188,7 @@ class _CreateFavPageState extends State<CreateFavPage> {
 
   void _onEditCover(BuildContext context) {
     if (_cover?.isNotEmpty == true) {
-      showDialog(
+      showEinkDialog(
         context: context,
         builder: (_) => SimpleDialog(
           clipBehavior: Clip.hardEdge,

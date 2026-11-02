@@ -47,6 +47,7 @@ import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart' hide Image;
 import 'package:media_kit/media_kit.dart';
 import 'package:media_kit_video/media_kit_video.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 ///
 /// created by dom on 2026/02/14
@@ -542,7 +543,7 @@ class _GalleryViewerState extends State<GalleryViewer>
     final item = widget.sources[_currIndex.value];
     if (item.sourceType == .fileImage) return;
     HapticFeedback.mediumImpact();
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => SimpleDialog(
         clipBehavior: Clip.hardEdge,

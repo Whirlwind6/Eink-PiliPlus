@@ -23,6 +23,7 @@ import 'package:extended_nested_scroll_view/extended_nested_scroll_view.dart'
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class MemberController extends CommonDataController<SpaceData, SpaceData?>
     with GetTickerProviderStateMixin {
@@ -198,7 +199,7 @@ class MemberController extends CommonDataController<SpaceData, SpaceData?>
       SmartDialog.showToast('屏蔽成功');
       return;
     }
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('提示'),

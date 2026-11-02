@@ -9,6 +9,7 @@ import 'package:PiliPlus/utils/login_utils.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart' hide StatefulBuilder;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 List<SettingsModel> get privacySettings => [
   NormalModel(
@@ -24,7 +25,7 @@ List<SettingsModel> get privacySettings => [
   ),
   NormalModel(
     onTap: (context, setState) {
-      showDialog(
+      showEinkDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('账号模式详情'),
@@ -82,7 +83,7 @@ void _showBuvidDialog(BuildContext context, VoidCallback setState) {
       (i) => (i, TextEditingController(text: i.buvid)),
     ),
   ];
-  showDialog<bool>(
+  showEinkDialog<bool>(
     context: context,
     builder: (context) {
       final theme = Theme.of(context);

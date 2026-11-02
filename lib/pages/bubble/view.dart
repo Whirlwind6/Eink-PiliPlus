@@ -13,6 +13,7 @@ import 'package:PiliPlus/utils/grid.dart';
 import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart'
+import 'package:PiliPlus/utils/eink_dialog.dart';
     hide ListTile, SliverGridDelegateWithMaxCrossAxisExtent;
 
 class BubblePage extends StatefulWidget {
@@ -90,7 +91,7 @@ class _BubblePageState extends State<BubblePage>
               if (item != null) {
                 return FloatingActionButton.extended(
                   tooltip: '排序',
-                  onPressed: () => showDialog(
+                  onPressed: () => showEinkDialog(
                     context: context,
                     builder: (context) => SimpleDialog(
                       clipBehavior: .hardEdge,

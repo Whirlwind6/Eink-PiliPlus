@@ -21,6 +21,7 @@ import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -279,7 +280,7 @@ class _LoginPageState extends State<LoginPage> {
               onPressed: () {
                 //https://passport.bilibili.com/h5-app/passport/login/findPassword
                 //https://passport.bilibili.com/passport/findPassword
-                showDialog(
+                showEinkDialog(
                   context: context,
                   builder: (context) => SimpleDialog(
                     clipBehavior: Clip.hardEdge,

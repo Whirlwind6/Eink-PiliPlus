@@ -1,16 +1,18 @@
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink.dart';
 
 class PublishRoute<T> extends PopupRoute<T> {
   PublishRoute({
     required this.pageBuilder,
     this.barrierDismissible = true,
     this.barrierLabel,
-    this.barrierColor = const Color(0x80000000),
+    Color? barrierColor,
     Duration? transitionDuration,
     this._transitionBuilder,
     super.settings,
-  }) : transitionDuration =
+  }) : _barrierColor = barrierColor,
+       transitionDuration =
            transitionDuration ??
            (PlatformUtils.isDesktop
                ? const Duration(milliseconds: 400)
@@ -24,8 +26,13 @@ class PublishRoute<T> extends PopupRoute<T> {
   @override
   final String? barrierLabel;
 
+  final Color? _barrierColor;
+
+  /// 发布页是全屏白底，默认的 50% 黑遮罩在墨水屏上会压出一整屏灰
   @override
-  final Color barrierColor;
+  Color get barrierColor =>
+      _barrierColor ??
+      (Eink.enabled ? const Color(0x14000000) : const Color(0x80000000));
 
   @override
   final Duration transitionDuration;

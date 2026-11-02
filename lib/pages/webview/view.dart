@@ -19,6 +19,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 final _prefixRegex = RegExp(r'^(?!(https?://))\S+://', caseSensitive: false);
 
@@ -478,7 +479,7 @@ document.styleSheets[0].insertRule('#app__display-area > div.control-panel {disp
                 },
                 onDownloadStartRequest: Platform.isAndroid
                     ? (controller, request) {
-                        showDialog(
+                        showEinkDialog(
                           context: context,
                           builder: (context) {
                             String suggestedFilename = request.suggestedFilename

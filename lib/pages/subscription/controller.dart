@@ -8,6 +8,7 @@ import 'package:PiliPlus/utils/accounts.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class SubController extends CommonListController<SubData, SubItemModel> {
   late final account = Accounts.main;
@@ -29,7 +30,7 @@ class SubController extends CommonListController<SubData, SubItemModel> {
 
   // 取消订阅
   void cancelSub(SubItemModel subFolderItem) {
-    showDialog(
+    showEinkDialog(
       context: Get.context!,
       builder: (context) => AlertDialog(
         title: const Text('提示'),

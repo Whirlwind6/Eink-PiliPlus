@@ -49,7 +49,7 @@ void _showEmoteDialog(ModuleDynamicModel? moduleDynamic) {
     }
   }
   if (emotes == null || emotes.isEmpty) return;
-  showDialog(
+  showEinkDialog(
     context: Get.context!,
     builder: (context) => Dialog(
       child: Padding(
@@ -90,7 +90,7 @@ void _showEmoteDialog(ModuleDynamicModel? moduleDynamic) {
 }
 
 void _showTextDialog(String text) {
-  showDialog(
+  showEinkDialog(
     context: Get.context!,
     builder: (context) => Dialog(
       child: Padding(

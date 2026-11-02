@@ -19,6 +19,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 List<SettingsModel> get videoSettings => [
   const SwitchModel(
@@ -192,7 +193,7 @@ List<SettingsModel> get videoSettings => [
 ];
 
 Future<void> _showCDNDialog(BuildContext context, VoidCallback setState) async {
-  final res = await showDialog<CDNService>(
+  final res = await showEinkDialog<CDNService>(
     context: context,
     builder: (context) => const CdnSelectDialog(),
   );
@@ -208,7 +209,7 @@ Future<void> _showLiveCDNDialog(
   VoidCallback setState,
 ) async {
   String host = Pref.liveCdnUrl ?? '';
-  String? res = await showDialog<String>(
+  String? res = await showEinkDialog<String>(
     context: context,
     builder: (context) => AlertDialog(
       title: const Text('输入CDN host'),
@@ -251,7 +252,7 @@ Future<void> _showVideoQaDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<int>(
+  final res = await showEinkDialog<int>(
     context: context,
     builder: (context) => SelectDialog<int>(
       title: '默认画质',
@@ -269,7 +270,7 @@ Future<void> _showVideoCellularQaDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<int>(
+  final res = await showEinkDialog<int>(
     context: context,
     builder: (context) => SelectDialog<int>(
       title: '蜂窝网络画质',
@@ -290,7 +291,7 @@ Future<void> _showAudioQaDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<int>(
+  final res = await showEinkDialog<int>(
     context: context,
     builder: (context) => SelectDialog<int>(
       title: '默认音质',
@@ -308,7 +309,7 @@ Future<void> _showAudioCellularQaDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<int>(
+  final res = await showEinkDialog<int>(
     context: context,
     builder: (context) => SelectDialog<int>(
       title: '蜂窝网络音质',
@@ -329,7 +330,7 @@ Future<void> _showLiveQaDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<int>(
+  final res = await showEinkDialog<int>(
     context: context,
     builder: (context) => SelectDialog<int>(
       title: '直播默认画质',
@@ -347,7 +348,7 @@ Future<void> _showLiveCellularQaDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<int>(
+  final res = await showEinkDialog<int>(
     context: context,
     builder: (context) => SelectDialog<int>(
       title: '蜂窝网络直播默认画质',
@@ -365,7 +366,7 @@ Future<void> _showCodecsDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<List<VideoDecodeFormatType>>(
+  final res = await showEinkDialog<List<VideoDecodeFormatType>>(
     context: context,
     builder: (context) => OrderedMultiSelectDialog<VideoDecodeFormatType>(
       title: const Text('首选解码格式'),
@@ -386,7 +387,7 @@ Future<void> _showCellularCodecsDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<List<VideoDecodeFormatType>>(
+  final res = await showEinkDialog<List<VideoDecodeFormatType>>(
     context: context,
     builder: (context) => OrderedMultiSelectDialog<VideoDecodeFormatType>(
       title: const Text('蜂窝网络首选解码格式'),
@@ -407,7 +408,7 @@ Future<void> _showAudioOutputDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<List<String>>(
+  final res = await showEinkDialog<List<String>>(
     context: context,
     builder: (context) => OrderedMultiSelectDialog<String>(
       title: const Text('音频输出设备'),
@@ -430,7 +431,7 @@ Future<void> _showVideoSyncDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<String>(
+  final res = await showEinkDialog<String>(
     context: context,
     builder: (context) => SelectDialog<String>(
       title: '视频同步',
@@ -458,7 +459,7 @@ Future<void> _showHwDecDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<List<String>>(
+  final res = await showEinkDialog<List<String>>(
     context: context,
     builder: (context) => OrderedMultiSelectDialog<String>(
       title: const Text('硬解模式'),
@@ -479,7 +480,7 @@ Future<void> _showHwDecDialog(
 
 void _showAutoSyncDialog(BuildContext context, VoidCallback setState) {
   String autosync = Pref.autosync.toString();
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: const Text('自动同步'),
@@ -526,7 +527,7 @@ void _showDecimalDialog(
   required String? suffix,
 }) {
   String value = (GStorage.setting.get(key) ?? defVal).toString();
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: Text(title),

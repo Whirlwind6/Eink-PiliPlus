@@ -17,6 +17,7 @@ import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class PopularSeriesPage extends StatefulWidget {
   const PopularSeriesPage({super.key});
@@ -127,7 +128,7 @@ class _PopularSeriesPageState extends State<PopularSeriesPage> with GridMixin {
         final controller = ScrollController(
           initialScrollOffset: max(0, currIndex * 44 + 34 - width / 2),
         );
-        showDialog(
+        showEinkDialog(
           context: context,
           builder: (context) => Dialog(
             clipBehavior: Clip.hardEdge,

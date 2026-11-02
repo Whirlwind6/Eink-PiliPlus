@@ -17,6 +17,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart' hide ListTile;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class _SettingsModel {
   final SettingType type;
@@ -240,7 +241,7 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Future<void> _logoutDialog(BuildContext context) async {
-    final result = await showDialog<Set<LoginAccount>>(
+    final result = await showEinkDialog<Set<LoginAccount>>(
       context: context,
       builder: (context) => MultiSelectDialog<LoginAccount>(
         title: '选择要登出的账号uid',
@@ -252,7 +253,7 @@ class _SettingPageState extends State<SettingPage> {
     );
     if (!context.mounted || result == null || result.isEmpty) return;
 
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) {
         return AlertDialog(

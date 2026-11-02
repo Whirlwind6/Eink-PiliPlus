@@ -20,6 +20,7 @@ import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class VotePanel extends StatefulWidget {
   final VoteInfo voteInfo;
@@ -156,7 +157,7 @@ class _VotePanelState extends State<VotePanel> {
               return GestureDetector(
                 behavior: .opaque,
                 onTap: () {
-                  showDialog(
+                  showEinkDialog(
                     context: context,
                     builder: (context) {
                       final colorScheme = ColorScheme.of(context);
@@ -537,7 +538,7 @@ Future<void> showVoteDialog(
   final voteInfo = await DynamicsHttp.voteInfo(voteId);
   if (context.mounted) {
     if (voteInfo case Success(:final response)) {
-      showDialog(
+      showEinkDialog(
         context: context,
         builder: (context) => Dialog(
           constraints: const BoxConstraints(minWidth: 280, maxWidth: 625),

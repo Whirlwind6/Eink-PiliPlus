@@ -12,6 +12,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart' hide RefreshIndicator;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 List<SettingsModel> get dmSettings => [
   const SwitchModel(
@@ -56,7 +57,7 @@ List<SettingsModel> get dmSettings => [
 
 void _showDmHeightDialog(BuildContext context, VoidCallback setState) {
   String danmakuLineHeight = Pref.danmakuLineHeight.toString();
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: const Text('弹幕行高'),

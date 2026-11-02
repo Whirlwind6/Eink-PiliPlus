@@ -52,6 +52,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class AudioController extends GetxController
     with
@@ -600,7 +601,7 @@ class AudioController extends GetxController
     final audioUrl = isUgc
         ? '${HttpString.baseUrl}/video/${IdUtils.av2bv(oid.toInt())}'
         : '${HttpString.baseUrl}/audio/au$oid';
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (_) => SimpleDialog(
         clipBehavior: Clip.hardEdge,

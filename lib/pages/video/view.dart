@@ -1100,16 +1100,12 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                   height: 34,
                   child: IconButton(
                     tooltip: '返回',
-                    icon: const Icon(
+                    icon: Icon(
                       FontAwesomeIcons.arrowLeft,
                       size: 15,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 1.5,
-                          color: Colors.black,
-                        ),
-                      ],
+                      // 墨水屏下封面已隐藏，白图标会消失在白底上
+                      color: _overlayFg,
+                      shadows: _overlayShadow,
                     ),
                     onPressed: Get.back,
                   ),
@@ -1119,16 +1115,11 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                   height: 34,
                   child: IconButton(
                     tooltip: '返回主页',
-                    icon: const Icon(
+                    icon: Icon(
                       FontAwesomeIcons.house,
                       size: 15,
-                      color: Colors.white,
-                      shadows: [
-                        Shadow(
-                          blurRadius: 1.5,
-                          color: Colors.black,
-                        ),
-                      ],
+                      color: _overlayFg,
+                      shadows: _overlayShadow,
                     ),
                     onPressed:
                         videoDetailController.plPlayerController.onCloseAll,
@@ -1136,13 +1127,8 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                 ),
                 const Spacer(),
                 _moreBtn(
-                  Colors.white,
-                  shadows: const [
-                    Shadow(
-                      blurRadius: 1.5,
-                      color: Colors.black,
-                    ),
-                  ],
+                  _overlayFg,
+                  shadows: _overlayShadow,
                 ),
               ],
             ),
@@ -1157,6 +1143,19 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
     }
     return const SizedBox.shrink();
   });
+
+  /// 手动播放浮层的图标色：墨水屏下压在白块上，用白色等于看不见
+  Color get _overlayFg =>
+      Eink.enabled ? const Color(0xFF111111) : Colors.white;
+
+  /// 深色画面才需要投影把白色图标托起来，白底上用不着
+  List<Shadow>? get _overlayShadow =>
+      Eink.enabled ? null : const [
+        Shadow(
+          blurRadius: 1.5,
+          color: Colors.black,
+        ),
+      ];
 
   Widget _moreBtn(Color color, {List<Shadow>? shadows}) => PopupMenuButton(
     icon: Icon(

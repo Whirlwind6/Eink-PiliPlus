@@ -8,6 +8,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 typedef ReasonCheck = bool Function(int? reasonType);
 
@@ -63,7 +64,7 @@ Future<void> autoWrapReportDialog(
     );
   }
 
-  return showDialog(
+  return showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: title,

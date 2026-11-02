@@ -9,6 +9,7 @@ import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class PgcReviewPage extends StatefulWidget {
   const PgcReviewPage({
@@ -114,7 +115,7 @@ class _PgcReviewPageState extends State<PgcReviewPage>
               kFloatingActionButtonMargin,
         ),
         child: FloatingActionButton(
-          onPressed: () => showDialog(
+          onPressed: () => showEinkDialog(
             context: context,
             builder: (context) => SimpleDialog(
               clipBehavior: Clip.hardEdge,

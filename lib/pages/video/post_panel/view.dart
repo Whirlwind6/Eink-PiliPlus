@@ -24,6 +24,7 @@ import 'package:flutter/services.dart' show FilteringTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class PostPanel extends CommonSlidePage {
   const PostPanel({
@@ -129,7 +130,7 @@ class PostPanel extends CommonSlidePage {
                   ],
                 );
                 if (PlatformUtils.isDesktop || context.isTablet) {
-                  res = await showDialog<String>(
+                  res = await showEinkDialog<String>(
                     context: context,
                     builder: (context) => AlertDialog(
                       content: textField,
@@ -304,7 +305,7 @@ class _PostPanelState extends State<PostPanel>
               ),
               child: FloatingActionButton(
                 tooltip: '提交',
-                onPressed: () => showDialog(
+                onPressed: () => showEinkDialog(
                   context: context,
                   builder: (context) => AlertDialog(
                     title: const Text('确定无误再提交'),

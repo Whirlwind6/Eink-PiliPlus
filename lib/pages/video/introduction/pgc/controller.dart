@@ -35,6 +35,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 typedef OnChangePgcEpisode = Function(
   BaseEpisodeItem episode, {
@@ -151,7 +152,7 @@ class PgcIntroController extends CommonIntroController {
   void actionShareVideo(BuildContext context) {
     String videoUrl =
         '${HttpString.baseUrl}/bangumi/play/ep$epId${videoDetailCtr.playedTimePos(false)}';
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (_) => SimpleDialog(
         clipBehavior: Clip.hardEdge,

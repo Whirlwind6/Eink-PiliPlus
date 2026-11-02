@@ -221,7 +221,8 @@ abstract final class ThemeUtils {
       outline: const Color(0xFF757575),
       outlineVariant: line,
       shadow: Colors.transparent,
-      scrim: const Color(0x66000000),
+      // 抽屉、菜单之类的遮罩，40% 黑在墨水屏上太沉
+      scrim: const Color(0x14000000),
     );
 
     const border = BorderSide(color: line, width: 0.8);

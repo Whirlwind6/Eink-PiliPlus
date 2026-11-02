@@ -6,6 +6,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 const _reason = ['头像违规', '昵称违规', '签名违规'];
 
@@ -19,7 +20,7 @@ Future<void> showMemberReportDialog(
   final Set<int> reason = {};
   int? reasonV2;
 
-  return showDialog(
+  return showEinkDialog(
     context: context,
     builder: (context) {
       final theme = Theme.of(context);

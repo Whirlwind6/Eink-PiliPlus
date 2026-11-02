@@ -6,7 +6,7 @@ void showReplyCopyDialog(
   Map<String, Emote> emotes,
 ) {
   bool showEmote = false;
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => Dialog(
       constraints: const BoxConstraints.tightFor(width: 380),

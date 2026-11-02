@@ -59,6 +59,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:protobuf/protobuf.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 part 'package:PiliPlus/common/widgets/context_menu/reply_menu_helper.dart';
 
@@ -1077,7 +1078,7 @@ class ReplyItemGrpc extends StatelessWidget {
             ListTile(
               onTap: () async {
                 Get.back();
-                bool? isDelete = await showDialog<bool>(
+                bool? isDelete = await showEinkDialog<bool>(
                   context: context,
                   builder: (context) {
                     final colorScheme = ColorScheme.of(context);

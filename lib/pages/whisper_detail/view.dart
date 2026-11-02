@@ -30,6 +30,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart' hide TextField;
 import 'package:mime/mime.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 const _kMaxExtent = 625.0;
 const _kConstraints = BoxConstraints(maxWidth: _kMaxExtent);
@@ -232,7 +233,7 @@ class _WhisperDetailPageState
 
   void onLongPress(int index, Msg item, bool isOwner) {
     Feedback.forLongPress(context);
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => AlertDialog(
         clipBehavior: Clip.hardEdge,

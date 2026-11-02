@@ -18,6 +18,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 abstract final class ReplyUtils {
   static void onCheckReply({
@@ -98,7 +99,7 @@ abstract final class ReplyUtils {
       await Future.pause(const Duration(seconds: 8));
     }
     void showReplyCheckResult(String message, {bool isBan = false}) {
-      showDialog(
+      showEinkDialog(
         context: Get.context!,
         barrierDismissible: isManual,
         builder: (context) {

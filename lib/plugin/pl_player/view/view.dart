@@ -83,6 +83,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:material_ui/material_ui.dart';
 import 'package:media_kit_video/media_kit_video.dart';
 import 'package:screen_brightness_platform_interface/screen_brightness_platform_interface.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 part 'widgets.dart';
 
@@ -396,6 +397,23 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
     super.dispose();
   }
 
+  /// 播放器控制层的图标 / 文字颜色。
+  ///
+  /// 墨水屏下画面被替换成白色块，原来的白色图标会直接消失在白底上，
+  /// 这里改成近黑色；其他模式保持白色（视频画面通常偏暗）。
+  Color get _controlFg =>
+      Eink.enabled ? const Color(0xFF111111) : Colors.white;
+
+  /// 播放器弹出菜单（清晰度、倍速、字幕…）的底色。
+  /// 墨水屏下用白底，避免展开菜单时整块黑色反色刷新。
+  Color get _popupBg =>
+      Eink.enabled ? Colors.white : Colors.black.withValues(alpha: 0.8);
+
+  /// 播放器临时提示条（拖动进度、音量、长按倍速）的底色。
+  /// 原来是一条黑色胶囊，墨水屏上白画面里会突兀地闪一块黑。
+  Color get _toastBg =>
+      Eink.enabled ? const Color(0xFFEFEFEF) : const Color(0x88000000);
+
   // 动态构建底部控制条
   Widget buildBottomControl(
     VideoDetailController videoDetailController,
@@ -423,10 +441,10 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         width: widgetWidth,
         height: 30,
         tooltip: '上一集',
-        icon: const Icon(
+        icon: Icon(
           Icons.skip_previous,
           size: 22,
-          color: Colors.white,
+          color: _controlFg,
         ),
         onTap: () {
           if (!introController.prevPlay()) {
@@ -440,10 +458,10 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         width: widgetWidth,
         height: 30,
         tooltip: '下一集',
-        icon: const Icon(
+        icon: Icon(
           Icons.skip_next,
           size: 22,
-          color: Colors.white,
+          color: _controlFg,
         ),
         onTap: () {
           if (!introController.nextPlay()) {
@@ -476,10 +494,10 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
               tooltip: '高能进度条',
               icon: DisabledIcon(
                 disable: !show,
-                child: const Icon(
+                child: Icon(
                   Icons.show_chart,
                   size: 22,
-                  color: Colors.white,
+                  color: _controlFg,
                 ),
               ),
               onTap: () => videoDetailController.showDmTrendChart.value = !show,
@@ -497,7 +515,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
             tooltip: '超分辨率',
             requestFocus: false,
             initialValue: type,
-            color: Colors.black.withValues(alpha: 0.8),
+            color: _popupBg,
             itemBuilder: (context) {
               return SuperResolutionType.values
                   .map(
@@ -508,8 +526,8 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                       onTap: () => plPlayerController.setShader(type),
                       child: Text(
                         type.label,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: _controlFg,
                           fontSize: 13,
                         ),
                       ),
@@ -521,7 +539,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 type.label,
-                style: const TextStyle(color: Colors.white, fontSize: 13),
+                style: TextStyle(color: _controlFg, fontSize: 13),
               ),
             ),
           );
@@ -538,10 +556,10 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
               tooltip: '分段信息',
               icon: DisabledIcon(
                 disable: !videoDetailController.showVP.value,
-                child: const Icon(
+                child: Icon(
                   CustomIcons.view_headline_rotate_90,
                   size: 22,
-                  color: Colors.white,
+                  color: _controlFg,
                 ),
               ),
               onTap: widget.showViewPoints,
@@ -563,10 +581,10 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         width: widgetWidth,
         height: 30,
         tooltip: '选集',
-        icon: const Icon(
+        icon: Icon(
           Icons.list,
           size: 22,
-          color: Colors.white,
+          color: _controlFg,
         ),
         onTap: () {
           if (videoDetailController.isFileSource) {
@@ -596,7 +614,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
             tooltip: '画面比例',
             requestFocus: false,
             initialValue: fit,
-            color: Colors.black.withValues(alpha: 0.8),
+            color: _popupBg,
             itemBuilder: (context) {
               return VideoFitType.values
                   .map(
@@ -607,8 +625,8 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                       onTap: () => plPlayerController.toggleVideoFit(boxFit),
                       child: Text(
                         boxFit.desc,
-                        style: const TextStyle(
-                          color: Colors.white,
+                        style: TextStyle(
+                          color: _controlFg,
                           fontSize: 13,
                         ),
                       ),
@@ -620,7 +638,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 fit.desc,
-                style: const TextStyle(color: Colors.white, fontSize: 13),
+                style: TextStyle(color: _controlFg, fontSize: 13),
               ),
             ),
           );
@@ -636,14 +654,14 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
               requestFocus: false,
               initialValue: videoDetailController.currLang.value,
               onSelected: videoDetailController.setLanguage,
-              color: Colors.black.withValues(alpha: 0.8),
+              color: _popupBg,
               itemBuilder: (context) => [
-                const PopupMenuItem<String>(
+                PopupMenuItem<String>(
                   height: 35,
                   value: '',
                   child: Text(
                     "关闭翻译",
-                    style: TextStyle(color: Colors.white, fontSize: 13),
+                    style: TextStyle(color: _controlFg, fontSize: 13),
                   ),
                 ),
                 ...list.map(
@@ -652,7 +670,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                     value: e.lang,
                     child: Text(
                       e.title!,
-                      style: const TextStyle(color: Colors.white, fontSize: 13),
+                      style: TextStyle(color: _controlFg, fontSize: 13),
                     ),
                   ),
                 ),
@@ -660,10 +678,10 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
               child: SizedBox(
                 width: widgetWidth,
                 height: 30,
-                child: const Icon(
+                child: Icon(
                   Icons.translate,
                   size: 18,
-                  color: Colors.white,
+                  color: _controlFg,
                 ),
               ),
             );
@@ -681,17 +699,17 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
               tooltip: '字幕',
               requestFocus: false,
               initialValue: val,
-              color: Colors.black.withValues(alpha: 0.8),
+              color: _popupBg,
               itemBuilder: (context) {
                 return [
                   PopupMenuItem<int>(
                     value: 0,
                     height: 35,
                     onTap: () => videoDetailController.setSubtitle(0),
-                    child: const Text(
+                    child: Text(
                       "关闭字幕",
                       style: TextStyle(
-                        color: Colors.white,
+                        color: _controlFg,
                         fontSize: 13,
                       ),
                     ),
@@ -705,7 +723,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                         e.lanDoc ?? e.lan,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: const .new(color: Colors.white, fontSize: 13),
+                        style: .new(color: _controlFg, fontSize: 13),
                       ),
                     );
                   }),
@@ -715,15 +733,15 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                 width: widgetWidth,
                 height: 30,
                 child: val == 0
-                    ? const Icon(
+                    ? Icon(
                         Icons.closed_caption_off_outlined,
                         size: 22,
-                        color: Colors.white,
+                        color: _controlFg,
                       )
-                    : const Icon(
+                    : Icon(
                         Icons.closed_caption_off_rounded,
                         size: 22,
-                        color: Colors.white,
+                        color: _controlFg,
                       ),
               ),
             );
@@ -738,7 +756,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
           tooltip: '倍速',
           requestFocus: false,
           initialValue: plPlayerController.playbackSpeed,
-          color: Colors.black.withValues(alpha: 0.8),
+          color: _popupBg,
           itemBuilder: (context) {
             return plPlayerController.speedList
                 .map(
@@ -749,7 +767,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                     onTap: () => plPlayerController.setPlaybackSpeed(speed),
                     child: Text(
                       "${speed}X",
-                      style: const TextStyle(color: Colors.white, fontSize: 13),
+                      style: TextStyle(color: _controlFg, fontSize: 13),
                       semanticsLabel: "$speed倍速",
                     ),
                   ),
@@ -760,7 +778,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Text(
               "${plPlayerController.playbackSpeed}X",
-              style: const TextStyle(color: Colors.white, fontSize: 13),
+              style: TextStyle(color: _controlFg, fontSize: 13),
               semanticsLabel: "${plPlayerController.playbackSpeed}倍速",
             ),
           ),
@@ -784,7 +802,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
             tooltip: '画质',
             requestFocus: false,
             initialValue: currentVideoQa.code,
-            color: Colors.black.withValues(alpha: 0.8),
+            color: _popupBg,
             itemBuilder: (context) {
               return List.generate(
                 videoFormat.length,
@@ -822,7 +840,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                     child: Text(
                       item.newDesc ?? item.quality.toString(),
                       style: enabled
-                          ? const TextStyle(color: Colors.white, fontSize: 13)
+                          ? TextStyle(color: _controlFg, fontSize: 13)
                           : const TextStyle(
                               color: Color(0x62FFFFFF),
                               fontSize: 13,
@@ -836,7 +854,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
               padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Text(
                 currentVideoQa.shortDesc,
-                style: const TextStyle(color: Colors.white, fontSize: 13),
+                style: TextStyle(color: _controlFg, fontSize: 13),
               ),
             ),
           );
@@ -849,8 +867,8 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         height: 30,
         tooltip: isFullScreen ? '退出全屏' : '全屏',
         icon: isFullScreen
-            ? const Icon(Icons.fullscreen_exit, size: 24, color: Colors.white)
-            : const Icon(Icons.fullscreen, size: 24, color: Colors.white),
+            ? Icon(Icons.fullscreen_exit, size: 24, color: _controlFg)
+            : Icon(Icons.fullscreen, size: 24, color: _controlFg),
         onTap: () =>
             plPlayerController.triggerFullScreen(status: !isFullScreen),
         onSecondaryTap: () => plPlayerController.triggerFullScreen(
@@ -1329,8 +1347,8 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
         : colorScheme.primary;
     late final thumbGlowColor = primary.withAlpha(80);
     late final bufferedBarColor = primary.withValues(alpha: 0.4);
-    const TextStyle textStyle = TextStyle(
-      color: Colors.white,
+    final TextStyle textStyle = TextStyle(
+      color: _controlFg,
       fontSize: 12,
     );
     final isLive = plPlayerController.isLive;
@@ -1392,15 +1410,15 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                     duration: const Duration(milliseconds: 150),
                     child: Container(
                       padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        color: Color(0x88000000),
+                      decoration: BoxDecoration(
+                        color: _toastBg,
                         borderRadius: BorderRadius.all(Radius.circular(16)),
                       ),
                       child: Obx(
                         () => Text(
                           '${plPlayerController.enableAutoLongPressSpeed ? (plPlayerController.longPressStatus.value ? plPlayerController.lastPlaybackSpeed : plPlayerController.playbackSpeed) * 2 : plPlayerController.longPressSpeed}倍速中',
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: _controlFg,
                             fontSize: 13,
                           ),
                         ),
@@ -1432,8 +1450,8 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                         : 0.0,
                     duration: const Duration(milliseconds: 150),
                     child: Container(
-                      decoration: const BoxDecoration(
-                        color: Color(0x88000000),
+                      decoration: BoxDecoration(
+                        color: _toastBg,
                         borderRadius: BorderRadius.all(Radius.circular(64)),
                       ),
                       padding: const EdgeInsets.symmetric(
@@ -1488,8 +1506,8 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                       horizontal: 8,
                       vertical: 5,
                     ),
-                    decoration: const BoxDecoration(
-                      color: Color(0x88000000),
+                    decoration: BoxDecoration(
+                      color: _toastBg,
                       borderRadius: BorderRadius.all(Radius.circular(64)),
                     ),
                     child: Row(
@@ -1502,15 +1520,15 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                               : volume < 0.5
                               ? Icons.volume_down
                               : Icons.volume_up,
-                          color: Colors.white,
+                          color: _controlFg,
                           size: 20.0,
                         ),
                         const SizedBox(width: 2.0),
                         Text(
                           '${(volume * 100.0).round()}%',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 13.0,
-                            color: Colors.white,
+                            color: _controlFg,
                           ),
                         ),
                       ],
@@ -1537,8 +1555,8 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                     horizontal: 8,
                     vertical: 5,
                   ),
-                  decoration: const BoxDecoration(
-                    color: Color(0x88000000),
+                  decoration: BoxDecoration(
+                    color: _toastBg,
                     borderRadius: BorderRadius.all(Radius.circular(64)),
                   ),
                   child: Row(
@@ -1551,15 +1569,15 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                             : _brightnessValue.value < 2.0 / 3.0
                             ? Icons.brightness_medium
                             : Icons.brightness_high,
-                        color: Colors.white,
+                        color: _controlFg,
                         size: 18.0,
                       ),
                       const SizedBox(width: 2.0),
                       Text(
                         '${(_brightnessValue.value * 100.0).round()}%',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13.0,
-                          color: Colors.white,
+                          color: _controlFg,
                         ),
                       ),
                     ],
@@ -1794,9 +1812,11 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                     () => Offstage(
                       offstage: !plPlayerController.showControls.value,
                       child: DecoratedBox(
-                        decoration: const BoxDecoration(
-                          color: Color(0x45000000),
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        decoration: BoxDecoration(
+                          color: _toastBg,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(8),
+                          ),
                         ),
                         child: Obx(() {
                           final controlsLock =
@@ -1804,15 +1824,15 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                           return ComBtn(
                             tooltip: controlsLock ? '解锁' : '锁定',
                             icon: controlsLock
-                                ? const Icon(
+                                ? Icon(
                                     FontAwesomeIcons.lock,
                                     size: 15,
-                                    color: Colors.white,
+                                    color: _controlFg,
                                   )
-                                : const Icon(
+                                : Icon(
                                     FontAwesomeIcons.lockOpen,
                                     size: 15,
-                                    color: Colors.white,
+                                    color: _controlFg,
                                   ),
                             onTap: () =>
                                 plPlayerController.onLockControl(!controlsLock),
@@ -1838,16 +1858,18 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                     child: Offstage(
                       offstage: !plPlayerController.showControls.value,
                       child: DecoratedBox(
-                        decoration: const BoxDecoration(
-                          color: Color(0x45000000),
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
+                        decoration: BoxDecoration(
+                          color: _toastBg,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(8),
+                          ),
                         ),
                         child: ComBtn(
                           tooltip: '截图',
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.photo_camera,
                             size: 20,
-                            color: Colors.white,
+                            color: _controlFg,
                           ),
                           onLongPress:
                               (Platform.isAndroid || kDebugMode) && !isLive
@@ -1886,24 +1908,24 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                         height: 25,
                         cacheHeight: 25.cacheSize(context),
                         semanticLabel: "加载中",
-                        color: Colors.white,
+                        color: _controlFg,
                       ),
                       if (plPlayerController.isBuffering.value)
                         Obx(() {
                           final buffered = plPlayerController.buffered.value;
                           if (buffered == 0) {
-                            return const Text(
+                            return Text(
                               '加载中...',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: _controlFg,
                                 fontSize: 12,
                               ),
                             );
                           }
                           return Text(
                             DurationUtils.formatDuration(buffered),
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: _controlFg,
                               fontSize: 12,
                             ),
                           );
@@ -2086,7 +2108,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
     WebpPreset preset = WebpPreset.def;
 
     final success =
-        await showDialog<bool>(
+        await showEinkDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
             title: const Text('动态截图'),

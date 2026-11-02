@@ -1,6 +1,10 @@
 import 'dart:async';
 
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:material_ui/material_ui.dart';
+
+/// 快退提示压在半透明白底上，白图标会看不清
+Color get _seekFg => Eink.enabled ? const Color(0xFF111111) : Colors.white;
 
 class BackwardSeekIndicator extends StatefulWidget {
   final ValueChanged<Duration> onSubmitted;
@@ -70,17 +74,17 @@ class BackwardSeekIndicatorState extends State<BackwardSeekIndicator> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Icon(
+              Icon(
                 Icons.fast_rewind,
                 size: 24.0,
-                color: Colors.white,
+                color: _seekFg,
               ),
               const SizedBox(height: 8.0),
               Text(
                 '快退${duration.inSeconds}秒',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 12.0,
-                  color: Colors.white,
+                  color: _seekFg,
                 ),
               ),
             ],

@@ -18,6 +18,7 @@ import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 // 收藏视频卡片 - 水平布局
 class FavVideoCardH extends StatelessWidget {
@@ -218,7 +219,7 @@ class FavVideoCardH extends StatelessWidget {
                 icon: const Icon(Icons.clear),
                 tooltip: '取消收藏',
                 iconColor: colorScheme.outline,
-                onPressed: () => showDialog(
+                onPressed: () => showEinkDialog(
                   context: context,
                   builder: (context) => AlertDialog(
                     title: const Text('提示'),

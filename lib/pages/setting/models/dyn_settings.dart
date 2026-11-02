@@ -12,6 +12,7 @@ import 'package:flutter/services.dart' show FilteringTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart' hide RefreshIndicator;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 List<SettingsModel> get dynSettings => [
   SplitModel(
@@ -101,7 +102,7 @@ List<SettingsModel> get dynSettings => [
 
 void _showDynDialog(BuildContext context) {
   String dynamicPeriod = Pref.dynamicPeriod.toString();
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: const Text('检查周期'),

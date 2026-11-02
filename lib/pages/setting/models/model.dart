@@ -9,6 +9,7 @@ import 'package:flutter/services.dart' show FilteringTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart' hide PopupMenuItemSelected;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 @immutable
 sealed class SettingsModel {
@@ -225,7 +226,7 @@ SettingsModel getBanWordModel({
     },
     onTap: (context, setState) {
       String editValue = banWord;
-      showDialog(
+      showEinkDialog(
         context: context,
         builder: (context) => AlertDialog(
           constraints: Style.dialogFixedConstraints,
@@ -301,7 +302,7 @@ SettingsModel getVideoFilterSelectModel({
           }
         : null,
     onTap: (context, setState) async {
-      var result = await showDialog<int>(
+      var result = await showEinkDialog<int>(
         context: context,
         builder: (context) => SelectDialog<int>(
           title: '选择$title${isFilter ? '（0即不过滤）' : ''}',
@@ -318,7 +319,7 @@ SettingsModel getVideoFilterSelectModel({
       if (result != null) {
         if (result == -1 && context.mounted) {
           String valueStr = '';
-          await showDialog(
+          await showEinkDialog(
             context: context,
             builder: (context) => AlertDialog(
               title: Text('自定义$title'),

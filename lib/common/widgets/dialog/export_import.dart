@@ -23,6 +23,7 @@ import 'package:re_highlight/languages/json.dart';
 import 'package:re_highlight/re_highlight.dart';
 import 'package:re_highlight/styles/base16/github.dart';
 import 'package:re_highlight/styles/github-dark.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 void exportToClipBoard({
   required ValueGetter<String> onExport,
@@ -71,7 +72,7 @@ Future<void> importFromClipBoard<T>(
       );
       late TextSpanRenderer renderer;
       bool? isDarkMode;
-      executeImport = await showDialog<bool>(
+      executeImport = await showEinkDialog<bool>(
         context: context,
         builder: (context) {
           final colorScheme = ColorScheme.of(context);
@@ -153,7 +154,7 @@ void importFromInput<T>(
   late T json;
   String? forceErrorText;
 
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: Text('输入$title'),
@@ -282,7 +283,7 @@ Future<void> _importAllDataFromArchive(BuildContext context) async {
     ),
   ];
 
-  final res = await showDialog<bool>(
+  final res = await showEinkDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
       title: const Text('导入所有数据？'),
@@ -298,7 +299,7 @@ Future<void> _importAllDataFromArchive(BuildContext context) async {
       bytes,
       onWarning: (warning) async {
         if (!context.mounted) return false;
-        return await showDialog<bool>(
+        return await showEinkDialog<bool>(
               context: context,
               builder: (context) => AlertDialog(
                 title: const Text('注意'),
@@ -319,7 +320,7 @@ Future<void> _importAllDataFromArchive(BuildContext context) async {
 
 Future<void> showDataImportExportDialog(BuildContext context) {
   final pageContext = context;
-  return showDialog(
+  return showEinkDialog(
     context: context,
     builder: (context) {
       const style = TextStyle(fontSize: 15);
@@ -353,7 +354,7 @@ Future<void> showImportExportDialog<T>(
   required ValueGetter<String> onExport,
   required FutureOr<void> Function(T json) onImport,
   required ValueGetter<String> localFileName,
-}) => showDialog(
+}) => showEinkDialog(
   context: context,
   builder: (context) {
     const style = TextStyle(fontSize: 15);

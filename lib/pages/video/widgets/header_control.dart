@@ -72,6 +72,8 @@ import 'package:intl/intl.dart' show DateFormat;
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart' hide showBottomSheet;
 import 'package:media_kit/media_kit.dart' show NativePlayer;
+import 'package:PiliPlus/utils/eink_dialog.dart';
+import 'package:PiliPlus/utils/eink.dart';
 
 mixin TimeBatteryMixin<T extends StatefulWidget> on State<T> {
   PlPlayerController get plPlayerController;
@@ -154,8 +156,8 @@ mixin TimeBatteryMixin<T extends StatefulWidget> on State<T> {
               }
               return Text(
                 '$batteryLevel%',
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: _playerFg,
                   fontSize: 13,
                 ),
               );
@@ -166,8 +168,8 @@ mixin TimeBatteryMixin<T extends StatefulWidget> on State<T> {
         Obx(
           () => Text(
             now.value,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: _playerFg,
               fontSize: 13,
             ),
           ),
@@ -177,6 +179,9 @@ mixin TimeBatteryMixin<T extends StatefulWidget> on State<T> {
     return null;
   }
 }
+
+/// 播放器顶栏压在画面上，墨水屏下画面是白块，白色图标会直接消失
+Color get _playerFg => Eink.enabled ? const Color(0xFF111111) : Colors.white;
 
 class HeaderControl extends StatefulWidget {
   const HeaderControl({
@@ -520,7 +525,7 @@ class HeaderControlState extends State<HeaderControl>
                     ),
                     onTap: () async {
                       Get.back();
-                      final result = await showDialog<CDNService>(
+                      final result = await showEinkDialog<CDNService>(
                         context: context,
                         builder: (context) => CdnSelectDialog(
                           sample: videoInfo.dash?.video?.firstOrNull,
@@ -809,7 +814,7 @@ class HeaderControlState extends State<HeaderControl>
   }) {
     final hwdec = player.getProperty('hwdec-current');
     final volume = player.getProperty('volume');
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) {
         final state = player.state;
@@ -1155,7 +1160,7 @@ class HeaderControlState extends State<HeaderControl>
   }
 
   void onExportSubtitle() {
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) {
         SubtitleFormat format = .vtt;
@@ -1694,7 +1699,7 @@ class HeaderControlState extends State<HeaderControl>
               spacing: 30,
               velocity: 30,
               strutStyle: const StrutStyle(fontSize: 16, leading: 0),
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+              style: TextStyle(color: _playerFg, fontSize: 16),
               provider: effectiveProvider,
             );
           },
@@ -1709,8 +1714,8 @@ class HeaderControlState extends State<HeaderControl>
             Obx(
               () => Text(
                 '${introController.total.value}人正在看',
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: _playerFg,
                   fontSize: 11,
                 ),
               ),
@@ -1735,10 +1740,10 @@ class HeaderControlState extends State<HeaderControl>
                   child: IconButton(
                     tooltip: '返回',
                     style: btnStyle,
-                    icon: const Icon(
+                    icon: Icon(
                       FontAwesomeIcons.arrowLeft,
                       size: 15,
-                      color: Colors.white,
+                      color: _playerFg,
                     ),
                     onPressed: () =>
                         plPlayerController.onPopInvokedWithResult(false, null),
@@ -1752,10 +1757,10 @@ class HeaderControlState extends State<HeaderControl>
                     child: IconButton(
                       tooltip: '返回主页',
                       style: btnStyle,
-                      icon: const Icon(
+                      icon: Icon(
                         FontAwesomeIcons.house,
                         size: 15,
-                        color: Colors.white,
+                        color: _playerFg,
                       ),
                       onPressed: plPlayerController.onCloseAll,
                     ),
@@ -1780,15 +1785,15 @@ class HeaderControlState extends State<HeaderControl>
                         onPressed: () =>
                             plPlayerController.setAlwaysOnTop(!isAlwaysOnTop),
                         icon: isAlwaysOnTop
-                            ? const Icon(
+                            ? Icon(
                                 size: 19,
                                 Icons.push_pin,
-                                color: Colors.white,
+                                color: _playerFg,
                               )
-                            : const Icon(
+                            : Icon(
                                 size: 19,
                                 Icons.push_pin_outlined,
-                                color: Colors.white,
+                                color: _playerFg,
                               ),
                       ),
                     );
@@ -1803,10 +1808,10 @@ class HeaderControlState extends State<HeaderControl>
                           tooltip: '听音频',
                           style: btnStyle,
                           onPressed: videoDetailCtr.toAudioPage,
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.headphones_outlined,
                             size: 19,
-                            color: Colors.white,
+                            color: _playerFg,
                           ),
                         ),
                       ),
@@ -1817,10 +1822,10 @@ class HeaderControlState extends State<HeaderControl>
                         tooltip: '投屏',
                         style: btnStyle,
                         onPressed: videoDetailCtr.onCast,
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.cast,
                           size: 19,
-                          color: Colors.white,
+                          color: _playerFg,
                         ),
                       ),
                     ),
@@ -1833,10 +1838,10 @@ class HeaderControlState extends State<HeaderControl>
                         tooltip: '提交片段',
                         style: btnStyle,
                         onPressed: () => videoDetailCtr.onBlock(context),
-                        icon: const Icon(
+                        icon: Icon(
                           CustomIcons.shield_play_arrow,
                           size: 20,
-                          color: Colors.white,
+                          color: _playerFg,
                         ),
                       ),
                     ),
@@ -1851,10 +1856,10 @@ class HeaderControlState extends State<HeaderControl>
                               tooltip: '片段信息',
                               style: btnStyle,
                               onPressed: videoDetailCtr.showSBDetail,
-                              icon: const Icon(
+                              icon: Icon(
                                 MdiIcons.advertisements,
                                 size: 19,
-                                color: Colors.white,
+                                color: _playerFg,
                               ),
                             ),
                           )
@@ -1868,10 +1873,10 @@ class HeaderControlState extends State<HeaderControl>
                       tooltip: '发弹幕',
                       style: btnStyle,
                       onPressed: videoDetailCtr.showShootDanmakuSheet,
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.comment_outlined,
                         size: 19,
-                        color: Colors.white,
+                        color: _playerFg,
                       ),
                     ),
                   ),
@@ -1896,15 +1901,15 @@ class HeaderControlState extends State<HeaderControl>
                             }
                           },
                           icon: enableShowDanmaku
-                              ? const Icon(
+                              ? Icon(
                                   size: 20,
                                   CustomIcons.dm_on,
-                                  color: Colors.white,
+                                  color: _playerFg,
                                 )
-                              : const Icon(
+                              : Icon(
                                   size: 20,
                                   CustomIcons.dm_off,
-                                  color: Colors.white,
+                                  color: _playerFg,
                                 ),
                         );
                       },
@@ -1918,10 +1923,10 @@ class HeaderControlState extends State<HeaderControl>
                     tooltip: '弹幕设置',
                     style: btnStyle,
                     onPressed: showSetDanmaku,
-                    icon: const Icon(
+                    icon: Icon(
                       size: 20,
                       CustomIcons.dm_settings,
-                      color: Colors.white,
+                      color: _playerFg,
                     ),
                   ),
                 ),
@@ -1941,10 +1946,10 @@ class HeaderControlState extends State<HeaderControl>
                           plPlayerController.enterPip();
                         }
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.picture_in_picture_outlined,
                         size: 19,
-                        color: Colors.white,
+                        color: _playerFg,
                       ),
                     ),
                   ),
@@ -1955,10 +1960,10 @@ class HeaderControlState extends State<HeaderControl>
                     tooltip: "更多设置",
                     style: btnStyle,
                     onPressed: showSettingSheet,
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.more_vert_outlined,
                       size: 19,
-                      color: Colors.white,
+                      color: _playerFg,
                     ),
                   ),
                 ),
@@ -1977,9 +1982,9 @@ class HeaderControlState extends State<HeaderControl>
                   child: Obx(
                     () => ActionItem(
                       expand: false,
-                      icon: const Icon(
+                      icon: Icon(
                         FontAwesomeIcons.thumbsUp,
-                        color: Colors.white,
+                        color: _playerFg,
                       ),
                       selectIcon: const Icon(FontAwesomeIcons.solidThumbsUp),
                       selectStatus: introController.hasLike.value,
@@ -2005,9 +2010,9 @@ class HeaderControlState extends State<HeaderControl>
                     () => ActionItem(
                       expand: false,
                       animation: introController.tripleAnimation,
-                      icon: const Icon(
+                      icon: Icon(
                         FontAwesomeIcons.b,
-                        color: Colors.white,
+                        color: _playerFg,
                       ),
                       selectIcon: const Icon(FontAwesomeIcons.b),
                       onTap: introController.actionCoinVideo,
@@ -2023,9 +2028,9 @@ class HeaderControlState extends State<HeaderControl>
                     () => ActionItem(
                       expand: false,
                       animation: introController.tripleAnimation,
-                      icon: const Icon(
+                      icon: Icon(
                         FontAwesomeIcons.star,
-                        color: Colors.white,
+                        color: _playerFg,
                       ),
                       selectIcon: const Icon(FontAwesomeIcons.solidStar),
                       onTap: () => introController.showFavBottomSheet(context),
@@ -2043,7 +2048,7 @@ class HeaderControlState extends State<HeaderControl>
                   height: btnHeight,
                   child: ActionItem(
                     expand: false,
-                    icon: const Icon(CustomIcons.download, color: Colors.white),
+                    icon: Icon(CustomIcons.download, color: _playerFg),
                     onTap: () => videoDetailCtr.onDownload(context),
                     text: '缓存',
                     semanticsLabel: '缓存',
@@ -2054,9 +2059,9 @@ class HeaderControlState extends State<HeaderControl>
                   height: btnHeight,
                   child: ActionItem(
                     expand: false,
-                    icon: const Icon(
+                    icon: Icon(
                       FontAwesomeIcons.shareFromSquare,
-                      color: Colors.white,
+                      color: _playerFg,
                     ),
                     onTap: () => introController.actionShareVideo(context),
                     semanticsLabel: '分享',

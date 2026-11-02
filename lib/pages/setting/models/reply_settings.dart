@@ -14,6 +14,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart' hide RefreshIndicator;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 List<SettingsModel> get replySettings => [
   const SwitchModel(
@@ -132,7 +133,7 @@ List<SettingsModel> get replySettings => [
 
 void _showReplyLengthDialog(BuildContext context, VoidCallback setState) {
   String replyLengthLimit = ReplyItemGrpc.replyLengthLimit.toString();
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: const Text('评论折叠行数'),
@@ -192,7 +193,7 @@ Future<void> _showReplyAtBlockDialog(
   }
 
   var countStr = Pref.blockReplyAtCount?.toString();
-  await showDialog<String>(
+  await showEinkDialog<String>(
     context: context,
     builder: (context) => AlertDialog(
       title: const Text('屏蔽@的数量'),

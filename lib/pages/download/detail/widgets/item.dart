@@ -25,6 +25,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:path/path.dart' as path;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class DetailItem extends StatelessWidget {
   const DetailItem({
@@ -52,7 +53,7 @@ class DetailItem extends StatelessWidget {
   final bool? checked;
   final ValueChanged<BiliDownloadEntryInfo>? onSelect;
 
-  void showSegmentsDetail(BuildContext context) => showDialog(
+  void showSegmentsDetail(BuildContext context) => showEinkDialog(
     context: context,
     builder: (context) => SimpleDialog(
       clipBehavior: .hardEdge,
@@ -81,7 +82,7 @@ class DetailItem extends StatelessWidget {
     final canDel = onDelete != null;
     final enableMultiSelect = controller.enableMultiSelect.value;
     void onLongPress() => canDel && !enableMultiSelect
-        ? showDialog(
+        ? showEinkDialog(
             context: context,
             builder: (context) => SimpleDialog(
               clipBehavior: Clip.hardEdge,

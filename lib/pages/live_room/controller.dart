@@ -48,6 +48,7 @@ import 'package:flutter/foundation.dart' show kDebugMode, kReleaseMode;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 const int _kMaxChatCount = 500;
 const int _kTrimCount = _kMaxChatCount + 50;
@@ -249,12 +250,12 @@ class LiveRoomController extends GetxController {
     );
     if (res case Success(:final response)) {
       if (response.liveStatus != 1) {
-        _showDialog('当前直播间未开播');
+        _showEinkDialog('当前直播间未开播');
         return;
       }
       final playurl = response.playurlInfo?.playurl;
       if (playurl == null) {
-        _showDialog('无法获取播放地址');
+        _showEinkDialog('无法获取播放地址');
         return;
       }
       ruid = response.uid;
@@ -277,7 +278,7 @@ class LiveRoomController extends GetxController {
       ]);
       isLoaded.value = true;
     } else {
-      _showDialog(res.toString());
+      _showEinkDialog(res.toString());
     }
   }
 
@@ -350,8 +351,8 @@ class LiveRoomController extends GetxController {
     }
   }
 
-  void _showDialog(String title) {
-    showDialog(
+  void _showEinkDialog(String title) {
+    showEinkDialog(
       context: Get.context!,
       builder: (_) => AlertDialog(
         title: Text(title),

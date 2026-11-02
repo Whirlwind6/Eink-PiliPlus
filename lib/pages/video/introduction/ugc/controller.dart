@@ -48,6 +48,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class UgcIntroController extends CommonIntroController with ReloadMixin {
   late final RxBool expand;
@@ -433,7 +434,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
     final playedTimePos = videoDetailCtr.playedTimePos(addIndex);
     final videoUrl =
         '${HttpString.baseUrl}/video/$bvid/${addIndex ? '?p=${partIndex + 1}' : ''}';
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (_) => SimpleDialog(
         clipBehavior: Clip.hardEdge,

@@ -36,6 +36,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart' hide RefreshIndicator;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 List<SettingsModel> get extraSettings => [
   if (PlatformUtils.isDesktop) ...[
@@ -280,7 +281,7 @@ List<SettingsModel> get extraSettings => [
 ];
 
 void _showDownPathDialog(BuildContext context, VoidCallback setState) {
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => SimpleDialog(
       clipBehavior: Clip.hardEdge,
@@ -335,7 +336,7 @@ void _showDownPathDialog(BuildContext context, VoidCallback setState) {
 
 void _showTouchSlopDialog(BuildContext context, VoidCallback setState) {
   String initialValue = Pref.touchSlopH.toString();
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: const Text('横向滑动阈值'),
@@ -377,7 +378,7 @@ Future<void> _showRefreshDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<double>(
+  final res = await showEinkDialog<double>(
     context: context,
     builder: (context) => SliderDialog(
       title: const Text('刷新指示器高度'),
@@ -416,7 +417,7 @@ Future<void> _showFavDialog(BuildContext context) async {
       }
       final quickFavId = Pref.quickFavId;
       if (!context.mounted) return;
-      showDialog(
+      showEinkDialog(
         context: context,
         builder: (context) => AlertDialog(
           clipBehavior: Clip.hardEdge,
@@ -456,7 +457,7 @@ Future<void> _showReplyCountDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<double>(
+  final res = await showEinkDialog<double>(
     context: context,
     builder: (context) => SliderDialog(
       title: const Text('连接重试次数'),
@@ -478,7 +479,7 @@ Future<void> _showReplyDelayDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<double>(
+  final res = await showEinkDialog<double>(
     context: context,
     builder: (context) => SliderDialog(
       title: const Text('连接重试间隔'),
@@ -501,7 +502,7 @@ void _showProxyDialog(BuildContext context) {
   String systemProxyHost = Pref.systemProxyHost;
   String systemProxyPort = Pref.systemProxyPort;
 
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: const Text('设置代理'),
@@ -563,7 +564,7 @@ void _showProxyDialog(BuildContext context) {
 
 void _showCacheDialog(BuildContext context, VoidCallback setState) {
   String valueStr = '';
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: const Text('最大缓存大小'),

@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class DanmakuBlockPage extends StatefulWidget {
   const DanmakuBlockPage({super.key});
@@ -165,7 +166,7 @@ class _DanmakuBlockPageState extends State<DanmakuBlockPage> {
       DmBlockType.uid => '输入用户UID',
     };
     final isUid = type == DmBlockType.uid;
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: Text('${itemId != null ? "编辑" : "添加新的"}${type.label}规则'),

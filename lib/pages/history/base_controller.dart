@@ -5,6 +5,7 @@ import 'package:PiliPlus/utils/storage_key.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class HistoryBaseController extends GetxController {
   RxBool pauseStatus = false.obs;
@@ -16,7 +17,7 @@ class HistoryBaseController extends GetxController {
 
   // 清空观看历史
   void onClearHistory(BuildContext context, VoidCallback onSuccess) {
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('提示'),
@@ -52,7 +53,7 @@ class HistoryBaseController extends GetxController {
   // 暂停观看历史
   void onPauseHistory(BuildContext context) {
     final pauseStatus = !this.pauseStatus.value;
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('提示'),

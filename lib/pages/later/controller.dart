@@ -16,6 +16,7 @@ import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 mixin BaseLaterController
     on
@@ -47,7 +48,7 @@ mixin BaseLaterController
 
   // single
   void toViewDel(BuildContext context, int index, int aid) {
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('提示'),

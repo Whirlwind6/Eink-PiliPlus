@@ -44,6 +44,7 @@ import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 abstract final class RequestUtils {
   static Future<void> syncHistoryStatus() async {
@@ -169,7 +170,7 @@ abstract final class RequestUtils {
       if (context.mounted) {
         bool isSpecialFollowed = followStatus!.special == 1;
         String text = isSpecialFollowed ? '移除特别关注' : '加入特别关注';
-        showDialog(
+        showEinkDialog(
           context: context,
           builder: (context) => SimpleDialog(
             clipBehavior: Clip.hardEdge,
@@ -331,7 +332,7 @@ abstract final class RequestUtils {
             clearCookie: true,
           );
           final isSuccess = res.isSuccess;
-          showDialog(
+          showEinkDialog(
             context: Get.context!,
             barrierDismissible: isManual,
             builder: (context) {
@@ -446,7 +447,7 @@ abstract final class RequestUtils {
         final list = response.list;
         if (list == null || list.isEmpty) return;
         int? checkedId;
-        showDialog(
+        showEinkDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
@@ -610,7 +611,7 @@ abstract final class RequestUtils {
     final res = await UserHttp.getUserRealName(mid);
     if (res case Success(:final response)) {
       final show = !response.name.isNullOrEmpty;
-      showDialog(
+      showEinkDialog(
         context: Get.context!,
         builder: (context) => AlertDialog(
           title: SelectionText(

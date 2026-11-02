@@ -464,8 +464,11 @@ class _RenderVideoTime extends RenderBox {
     markNeedsSemanticsUpdate();
   }
 
-  static const _positionColor = Colors.white;
-  static const _durationColor = Color(0xFFD0D0D0);
+  // 墨水屏下画面是白块，白色时间文字会直接消失
+  static Color get _positionColor =>
+      Eink.enabled ? const Color(0xFF111111) : Colors.white;
+  static Color get _durationColor =>
+      Eink.enabled ? const Color(0xFF666666) : const Color(0xFFD0D0D0);
 
   ui.Paragraph? _cache;
 

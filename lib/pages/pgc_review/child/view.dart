@@ -24,6 +24,7 @@ import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class PgcReviewChildPage extends StatefulWidget {
   const PgcReviewChildPage({
@@ -128,7 +129,7 @@ class _PgcReviewChildPageState extends State<PgcReviewChildPage>
 
   Widget _itemWidget(ThemeData theme, int index, PgcReviewItemModel item) {
     final author = item.author!;
-    void showMore() => showDialog(
+    void showMore() => showEinkDialog(
       context: context,
       builder: (context) => SimpleDialog(
         clipBehavior: Clip.hardEdge,

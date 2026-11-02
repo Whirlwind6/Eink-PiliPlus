@@ -15,6 +15,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 const _kSqueeze = 1.25;
 const _kItemExtent = 38.0;
@@ -182,7 +183,7 @@ class ShutdownTimerService {
     final hourController = FixedExtentScrollController(initialItem: hour);
     final minuteController = FixedExtentScrollController(initialItem: minute);
 
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => AlertDialog(
         contentPadding: const .fromLTRB(20, 6, 20, 0),

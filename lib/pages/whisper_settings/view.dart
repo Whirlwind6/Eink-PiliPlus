@@ -11,6 +11,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:protobuf/protobuf.dart' show PbMap;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class WhisperSettingsPage extends StatefulWidget {
   const WhisperSettingsPage({
@@ -81,7 +82,7 @@ class _WhisperSettingsPageState extends State<WhisperSettingsPage> {
       );
     } else if (item.redirect.hasWindowSelect()) {
       String? selected;
-      showDialog(
+      showEinkDialog(
         context: context,
         builder: (context) => SimpleDialog(
           clipBehavior: Clip.hardEdge,

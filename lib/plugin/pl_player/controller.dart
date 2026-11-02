@@ -69,6 +69,8 @@ import 'package:path/path.dart' as path;
 import 'package:screen_brightness_platform_interface/screen_brightness_platform_interface.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:PiliPlus/utils/eink.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 typedef PlayCallback = Future<void>? Function();
 typedef PlayOwner = ({String tag, Type? type});
@@ -494,17 +496,24 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
   // 播放顺序相关
   late PlayRepeat playRepeat = Pref.playRepeat;
 
+  /// 墨水屏下画面是白色块，原来的白色字幕会直接看不见。
+  /// 这里把字改成近黑色，字幕底色反向改白，描边同理。
+  bool get _einkSub => Eink.enabled;
+  Color get _subtitleFg =>
+      _einkSub ? const Color(0xFF111111) : Colors.white;
+  Color get _subtitleBg => _einkSub ? Colors.white : Colors.black;
+
   TextStyle get subTitleStyle => TextStyle(
     height: 1.5,
     fontSize:
         16 * (isFullScreen.value ? subtitleFontScaleFS : subtitleFontScale),
     letterSpacing: 0.1,
     wordSpacing: 0.1,
-    color: Colors.white,
+    color: _subtitleFg,
     fontWeight: FontWeight.values[subtitleFontWeight],
     backgroundColor: subtitleBgOpacity == 0
         ? null
-        : Colors.black.withValues(alpha: subtitleBgOpacity),
+        : _subtitleBg.withValues(alpha: subtitleBgOpacity),
   );
 
   late final Rx<SubtitleViewConfiguration> subtitleConfig = getSubConfig.obs;
@@ -519,7 +528,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
               background: null,
               backgroundColor: null,
               foreground: Paint()
-                ..color = Colors.black
+                ..color = _einkSub ? Colors.white : Colors.black
                 ..style = PaintingStyle.stroke
                 ..strokeWidth = subtitleStrokeWidth,
             )
@@ -1799,7 +1808,7 @@ class PlPlayerController with BlockConfigMixin, AudioNormalizationMixin {
     final image = await videoPlayerController?.screenshot();
     if (image != null) {
       SmartDialog.showToast('点击弹窗或按 Enter 保存截图');
-      await showDialog(
+      await showEinkDialog(
         context: Get.context!,
         requestFocus: true,
         builder: (context) {

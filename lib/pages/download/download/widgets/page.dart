@@ -15,6 +15,7 @@ import 'package:PiliPlus/utils/storage.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class PageInfoItem<T extends MultiSelectData> extends StatelessWidget {
   const PageInfoItem({
@@ -42,7 +43,7 @@ class PageInfoItem<T extends MultiSelectData> extends StatelessWidget {
 
     void onLongPress() => enableMultiSelect
         ? null
-        : showDialog(
+        : showEinkDialog(
             context: context,
             builder: (context) => SimpleDialog(
               clipBehavior: Clip.hardEdge,

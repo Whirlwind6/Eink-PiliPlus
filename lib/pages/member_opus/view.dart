@@ -16,6 +16,7 @@ import 'package:PiliPlus/utils/waterfall.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class MemberOpus extends StatefulWidget {
   const MemberOpus({
@@ -94,7 +95,7 @@ class _MemberOpusState extends State<MemberOpus>
                   bottom: kFloatingActionButtonMargin + bottom,
                 ),
                 child: FloatingActionButton.extended(
-                  onPressed: () => showDialog(
+                  onPressed: () => showEinkDialog(
                     context: context,
                     builder: (context) => SimpleDialog(
                       clipBehavior: Clip.hardEdge,

@@ -32,6 +32,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:mime/mime.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
@@ -175,7 +176,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
           _item(
             title: '性别',
             text: _sex(response.sex!),
-            onTap: () => showDialog(
+            onTap: () => showEinkDialog(
               context: context,
               builder: (context_) => _sexDialog(response.sex!),
             ),
@@ -282,7 +283,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }) {
     _textController.text = text;
     final lines = type == ProfileType.uname ? 1 : 4;
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (BuildContext context) {
         final theme = Theme.of(context);

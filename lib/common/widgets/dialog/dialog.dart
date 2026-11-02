@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 Future<bool> showConfirmDialog({
   required BuildContext context,
@@ -8,7 +9,7 @@ Future<bool> showConfirmDialog({
   // @Deprecated('use `bool result = await showConfirmDialog()` instead')
   VoidCallback? onConfirm,
 }) async {
-  return await showDialog<bool>(
+  return await showEinkDialog<bool>(
         context: context,
         builder: (context) => AlertDialog(
           title: title,
@@ -60,7 +61,7 @@ void showPgcFollowDialog({
   required int followStatus,
   required ValueChanged<int> onUpdateStatus,
 }) {
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => SimpleDialog(
       clipBehavior: Clip.hardEdge,

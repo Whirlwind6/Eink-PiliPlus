@@ -19,6 +19,7 @@ import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class FollowPage extends StatefulWidget {
   const FollowPage({super.key});
@@ -224,7 +225,7 @@ class _FollowPageState extends State<FollowPage>
   }
 
   void _onHandleTag(int index, MemberTagItemModel item) {
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => SimpleDialog(
         clipBehavior: Clip.hardEdge,

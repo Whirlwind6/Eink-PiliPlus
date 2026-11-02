@@ -17,6 +17,7 @@ import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class SendDanmakuPanel extends CommonTextPubPage {
   // video
@@ -405,7 +406,7 @@ class _SendDanmakuPanelState extends CommonTextPubPageState<SendDanmakuPanel> {
   }
 
   void _showColorPicker() {
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => AlertDialog(
         clipBehavior: Clip.hardEdge,

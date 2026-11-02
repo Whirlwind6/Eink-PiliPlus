@@ -20,6 +20,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class LoginPageController extends GetxController
     with GetSingleTickerProviderStateMixin {
@@ -256,7 +257,7 @@ class LoginPageController extends GetxController
 
         TextEditingController textFieldController = TextEditingController();
         String captchaKey = '';
-        showDialog(
+        showEinkDialog(
           context: Get.context!,
           builder: (context) => AlertDialog(
             titlePadding: const .only(left: 16, top: 18, right: 16, bottom: 12),
@@ -642,7 +643,7 @@ class LoginPageController extends GetxController
       ),
     };
     bool quickSelect = selectAccount.every((e) => e == selectAccount.first);
-    return showDialog(
+    return showEinkDialog(
       context: parentContext,
       builder: (context) {
         final colorScheme = ColorScheme.of(context);

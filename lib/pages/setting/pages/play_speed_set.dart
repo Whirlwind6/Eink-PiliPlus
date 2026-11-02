@@ -14,6 +14,7 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:material_ui/material_ui.dart' hide ListTile;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class PlaySpeedPage extends StatefulWidget {
   const PlaySpeedPage({super.key});
@@ -59,7 +60,7 @@ class _PlaySpeedPageState extends State<PlaySpeedPage> {
   // 添加自定义倍速
   void onAddSpeed() {
     String initialValue = '';
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('添加倍速'),

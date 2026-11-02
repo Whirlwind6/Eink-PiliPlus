@@ -49,6 +49,7 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart' hide StatefulBuilder;
 import 'package:path/path.dart' as path;
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 List<SettingsModel> get styleSettings => [
   if (PlatformUtils.isDesktop) ...[
@@ -433,7 +434,7 @@ void _showQualityDialog({
   required int initValue,
   required ValueChanged<int> onChanged,
 }) {
-  showDialog<double>(
+  showEinkDialog<double>(
     context: context,
     builder: (context) => SliderDialog(
       value: initValue.toDouble(),
@@ -464,7 +465,7 @@ void _showUiScaleDialog(
     text: uiScale.toStringAsFixed(2),
   );
 
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: const Text('界面缩放'),
@@ -586,7 +587,7 @@ void _showSpringDialog(BuildContext context, _) {
     springDescription[2] = damping.toString();
   }
 
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       title: Row(
@@ -688,7 +689,7 @@ Future<void> _showTransitionDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<Transition>(
+  final res = await showEinkDialog<Transition>(
     context: context,
     builder: (context) => SelectDialog<Transition>(
       title: '页面过渡动画',
@@ -707,7 +708,7 @@ Future<void> _showCardWidthDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<(double, double)>(
+  final res = await showEinkDialog<(double, double)>(
     context: context,
     builder: (context) => DualSliderDialog(
       title: const Text('列表最大列宽度（默认240dp）'),
@@ -755,7 +756,7 @@ Future<void> _showMsgUnReadDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<Set<MsgUnReadType>>(
+  final res = await showEinkDialog<Set<MsgUnReadType>>(
     context: context,
     builder: (context) => MultiSelectDialog<MsgUnReadType>(
       title: '消息未读类型',
@@ -782,7 +783,7 @@ void _showReduceColorDialog(
   VoidCallback setState,
 ) {
   final reduceLuxColor = Pref.reduceLuxColor;
-  showDialog(
+  showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       clipBehavior: Clip.hardEdge,
@@ -832,7 +833,7 @@ Future<void> _showToastDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<double>(
+  final res = await showEinkDialog<double>(
     context: context,
     builder: (context) => SliderDialog(
       title: const Text('Toast不透明度'),
@@ -915,7 +916,7 @@ Future<void> _showMineTabsDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<List<MineTabType>>(
+  final res = await showEinkDialog<List<MineTabType>>(
     context: context,
     builder: (context) => OrderedMultiSelectDialog<MineTabType>(
       title: const Text('我的页卡片'),
@@ -937,7 +938,7 @@ Future<void> _showMemberTabDialog(
   BuildContext context,
   VoidCallback setState,
 ) async {
-  final res = await showDialog<MemberTabType>(
+  final res = await showEinkDialog<MemberTabType>(
     context: context,
     builder: (context) => SelectDialog<MemberTabType>(
       title: '用户页默认展示TAB',

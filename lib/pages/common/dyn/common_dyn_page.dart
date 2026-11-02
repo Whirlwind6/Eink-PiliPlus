@@ -27,6 +27,7 @@ import 'package:PiliPlus/utils/storage_key.dart';
 import 'package:easy_debounce/easy_throttle.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 enum DynType implements EnumWithLabel {
   repost('转发'),
@@ -327,7 +328,7 @@ mixin CommonDynPageMixin<T extends StatefulWidget>
 
   Widget ratioWidget(double maxWidth) => IconButton(
     tooltip: '页面比例调节',
-    onPressed: () => showDialog(
+    onPressed: () => showEinkDialog(
       context: context,
       builder: (context) => Align(
         alignment: Alignment.topRight,

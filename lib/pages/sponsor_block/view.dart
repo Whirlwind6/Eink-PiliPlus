@@ -21,6 +21,7 @@ import 'package:get/get.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class SponsorBlockPage extends StatefulWidget {
   const SponsorBlockPage({super.key});
@@ -79,7 +80,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
         dense: true,
         onTap: () {
           _textController.text = _blockLimit.toString();
-          showDialog(
+          showEinkDialog(
             context: context,
             builder: (_) => AlertDialog(
               title: Text('最短片段时长', style: titleStyle),
@@ -148,7 +149,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
         onTap: () {
           final key = GlobalKey<FormFieldState<String>>();
           _textController.text = _userId;
-          showDialog(
+          showEinkDialog(
             context: context,
             builder: (_) {
               return AlertDialog(
@@ -314,7 +315,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
         dense: true,
         onTap: () {
           _textController.text = _blockServer;
-          showDialog(
+          showEinkDialog(
             context: context,
             builder: (_) => AlertDialog(
               title: Text('服务器地址', style: titleStyle),
@@ -406,7 +407,7 @@ class _SponsorBlockPageState extends State<SponsorBlockPage> {
     Color color,
     Pair<SegmentType, SkipType> item,
   ) {
-    showDialog(
+    showEinkDialog(
       context: context,
       builder: (_) => AlertDialog(
         clipBehavior: Clip.hardEdge,

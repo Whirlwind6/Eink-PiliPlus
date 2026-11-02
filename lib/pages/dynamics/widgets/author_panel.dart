@@ -33,6 +33,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:get/get.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 class AuthorPanel extends StatelessWidget {
   final DynamicItemModel item;
@@ -429,7 +430,7 @@ class AuthorPanel extends StatelessWidget {
                       );
                       if (res case Success(:final response)) {
                         if (context.mounted) {
-                          showDialog(
+                          showEinkDialog(
                             context: context,
                             builder: (context) {
                               final selection = response.upReplySelection;
@@ -505,7 +506,7 @@ class AuthorPanel extends StatelessWidget {
                         }
                       }
 
-                      showDialog(
+                      showEinkDialog(
                         context: context,
                         builder: (context) => SimpleDialog(
                           clipBehavior: Clip.hardEdge,
@@ -551,7 +552,7 @@ class AuthorPanel extends StatelessWidget {
                   ListTile(
                     onTap: () {
                       Get.back();
-                      showDialog(
+                      showEinkDialog(
                         context: context,
                         builder: (context) => AlertDialog(
                           title: const Text('确定删除该动态?'),

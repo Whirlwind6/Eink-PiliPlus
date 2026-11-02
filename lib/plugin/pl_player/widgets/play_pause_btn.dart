@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:media_kit/media_kit.dart';
 
@@ -60,7 +61,8 @@ class PlayOrPauseButtonState extends State<PlayOrPauseButton>
             semanticLabel: player.state.playing ? '暂停' : '播放',
             progress: controller,
             icon: AnimatedIcons.play_pause,
-            color: Colors.white,
+            // 墨水屏下画面是白色块，白色图标会直接消失
+            color: Eink.enabled ? const Color(0xFF111111) : Colors.white,
             size: 20,
           ),
         ),

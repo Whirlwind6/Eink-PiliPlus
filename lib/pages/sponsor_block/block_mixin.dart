@@ -18,6 +18,7 @@ import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:media_kit/media_kit.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 
 mixin BlockConfigMixin {
   late final pgcSkipType = Pref.pgcSkipType;
@@ -285,7 +286,7 @@ mixin BlockMixin on GetxController {
   }
 
   void _showVoteDialog(SegmentModel segment) {
-    showDialog(
+    showEinkDialog(
       context: Get.context!,
       builder: (context) => SimpleDialog(
         clipBehavior: .hardEdge,
@@ -323,7 +324,7 @@ mixin BlockMixin on GetxController {
   ).then((i) => SmartDialog.showToast(i.isSuccess ? '投票成功' : '投票失败: $i'));
 
   void _showCategoryDialog(SegmentModel segment) {
-    showDialog(
+    showEinkDialog(
       context: Get.context!,
       builder: (context) => SimpleDialog(
         clipBehavior: .hardEdge,
@@ -373,7 +374,7 @@ mixin BlockMixin on GetxController {
   }
 
   void showSBDetail() {
-    showDialog(
+    showEinkDialog(
       context: Get.context!,
       builder: (context) => SimpleDialog(
         clipBehavior: .hardEdge,

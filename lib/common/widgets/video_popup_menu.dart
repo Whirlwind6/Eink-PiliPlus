@@ -9,6 +9,7 @@ import 'package:PiliPlus/pages/search/widgets/search_text.dart';
 import 'package:PiliPlus/pages/video/ai_conclusion/view.dart';
 import 'package:PiliPlus/pages/video/introduction/ugc/controller.dart';
 import 'package:PiliPlus/utils/accounts.dart';
+import 'package:PiliPlus/utils/eink_dialog.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:PiliPlus/utils/utils.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -72,7 +73,7 @@ class VideoPopupMenu extends StatelessWidget {
                           videoItem.owner.mid,
                         );
                         if (res != null && context.mounted) {
-                          showDialog(
+                          showEinkDialog(
                             context: context,
                             builder: (context) => Dialog(
                               child: Padding(
@@ -144,7 +145,7 @@ class VideoPopupMenu extends StatelessWidget {
                           );
                         }
 
-                        showDialog(
+                        showEinkDialog(
                           context: context,
                           builder: (context) {
                             return SimpleDialog(
@@ -202,7 +203,7 @@ class VideoPopupMenu extends StatelessWidget {
                           },
                         );
                       } else {
-                        showDialog(
+                        showEinkDialog(
                           context: context,
                           builder: (context) => SimpleDialog(
                             contentPadding: const .all(24),
@@ -264,7 +265,7 @@ class VideoPopupMenu extends StatelessWidget {
                   _VideoCustomAction(
                     '拉黑：${videoItem.owner.name}',
                     const Icon(MdiIcons.cancel, size: 16),
-                    () => showDialog(
+                    () => showEinkDialog(
                       context: context,
                       builder: (context) {
                         return AlertDialog(
