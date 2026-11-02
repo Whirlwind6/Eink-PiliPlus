@@ -12,8 +12,8 @@ import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:collection/collection.dart';
 import 'package:get/get.dart';
-import 'package:material_ui/material_ui.dart'
 import 'package:PiliPlus/utils/eink_dialog.dart';
+import 'package:material_ui/material_ui.dart'
     hide ListTile, SliverGridDelegateWithMaxCrossAxisExtent;
 
 class BubblePage extends StatefulWidget {

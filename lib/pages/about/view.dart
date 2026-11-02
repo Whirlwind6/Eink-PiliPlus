@@ -65,7 +65,7 @@ class _AboutPageState extends State<AboutPage> {
     });
   }
 
-  void _showEinkDialog() => showEinkDialog(
+  void _showDialog() => showEinkDialog(
     context: context,
     builder: (context) => AlertDialog(
       constraints: Style.dialogFixedConstraints,
@@ -102,7 +102,7 @@ class _AboutPageState extends State<AboutPage> {
             onTap: () {
               if (++_pressCount == 5) {
                 _pressCount = 0;
-                _showEinkDialog();
+                _showDialog();
               }
             },
             onSecondaryTap: PlatformUtils.isDesktop ? _showDialog : null,

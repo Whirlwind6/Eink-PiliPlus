@@ -250,12 +250,12 @@ class LiveRoomController extends GetxController {
     );
     if (res case Success(:final response)) {
       if (response.liveStatus != 1) {
-        _showEinkDialog('当前直播间未开播');
+        _showDialog('当前直播间未开播');
         return;
       }
       final playurl = response.playurlInfo?.playurl;
       if (playurl == null) {
-        _showEinkDialog('无法获取播放地址');
+        _showDialog('无法获取播放地址');
         return;
       }
       ruid = response.uid;
@@ -278,7 +278,7 @@ class LiveRoomController extends GetxController {
       ]);
       isLoaded.value = true;
     } else {
-      _showEinkDialog(res.toString());
+      _showDialog(res.toString());
     }
   }
 
@@ -351,7 +351,7 @@ class LiveRoomController extends GetxController {
     }
   }
 
-  void _showEinkDialog(String title) {
+  void _showDialog(String title) {
     showEinkDialog(
       context: Get.context!,
       builder: (_) => AlertDialog(

@@ -1471,7 +1471,7 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                               style: textStyle,
                             ),
                           ),
-                          const Text('/', style: textStyle),
+                          Text('/', style: textStyle),
                           Obx(
                             () => Text(
                               DurationUtils.formatDuration(
