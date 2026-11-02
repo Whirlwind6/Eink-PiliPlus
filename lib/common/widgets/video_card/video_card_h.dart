@@ -10,6 +10,7 @@ import 'package:PiliPlus/models/horizontal_video_model.dart';
 import 'package:PiliPlus/models_new/video/video_detail/dimension.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:material_ui/material_ui.dart';
@@ -54,70 +55,72 @@ class VideoCardH extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: .start,
                 children: [
-                  AspectRatio(
-                    aspectRatio: Style.aspectRatio,
-                    child: LayoutBuilder(
-                      builder: (context, boxConstraints) {
-                        final double maxWidth = boxConstraints.maxWidth;
-                        final double maxHeight = boxConstraints.maxHeight;
+                  if (!Eink.hideCover) ...[
+                    AspectRatio(
+                      aspectRatio: Style.aspectRatio,
+                      child: LayoutBuilder(
+                        builder: (context, boxConstraints) {
+                          final double maxWidth = boxConstraints.maxWidth;
+                          final double maxHeight = boxConstraints.maxHeight;
 
-                        final progress = videoItem.progress;
+                          final progress = videoItem.progress;
 
-                        return Stack(
-                          clipBehavior: .none,
-                          children: [
-                            NetworkImgLayer(
-                              src: videoItem.cover,
-                              width: maxWidth,
-                              height: maxHeight,
-                            ),
-                            if (videoItem.badge case final badge?)
-                              PBadge(
-                                text: badge,
-                                top: 6.0,
-                                right: 6.0,
-                                type: switch (badge) {
-                                  '充电专属' => .error,
-                                  _ => .primary,
-                                },
+                          return Stack(
+                            clipBehavior: .none,
+                            children: [
+                              NetworkImgLayer(
+                                src: videoItem.cover,
+                                width: maxWidth,
+                                height: maxHeight,
                               ),
-                            if (progress != null && progress != 0) ...[
-                              PBadge(
-                                text: progress == -1
-                                    ? '已看完'
-                                    : '${DurationUtils.formatDuration(progress)}/${DurationUtils.formatDuration(videoItem.duration)}',
-                                right: 6,
-                                bottom: 8,
-                                type: .gray,
-                              ),
-                              Positioned(
-                                left: 0,
-                                bottom: 0,
-                                right: 0,
-                                child: VideoProgressIndicator(
-                                  color: theme.colorScheme.primary,
-                                  backgroundColor:
-                                      theme.colorScheme.secondaryContainer,
-                                  progress: progress == -1
-                                      ? 1
-                                      : progress / videoItem.duration,
+                              if (videoItem.badge case final badge?)
+                                PBadge(
+                                  text: badge,
+                                  top: 6.0,
+                                  right: 6.0,
+                                  type: switch (badge) {
+                                    '充电专属' => .error,
+                                    _ => .primary,
+                                  },
                                 ),
-                              ),
-                            ] else if (videoItem.duration > 0)
-                              PBadge(
-                                text: DurationUtils.formatDuration(
-                                  videoItem.duration,
+                              if (progress != null && progress != 0) ...[
+                                PBadge(
+                                  text: progress == -1
+                                      ? '已看完'
+                                      : '${DurationUtils.formatDuration(progress)}/${DurationUtils.formatDuration(videoItem.duration)}',
+                                  right: 6,
+                                  bottom: 8,
+                                  type: .gray,
                                 ),
-                                right: 6.0,
-                                bottom: 6.0,
-                                type: .gray,
-                              ),
-                          ],
-                        );
-                      },
+                                Positioned(
+                                  left: 0,
+                                  bottom: 0,
+                                  right: 0,
+                                  child: VideoProgressIndicator(
+                                    color: theme.colorScheme.primary,
+                                    backgroundColor:
+                                        theme.colorScheme.secondaryContainer,
+                                    progress: progress == -1
+                                        ? 1
+                                        : progress / videoItem.duration,
+                                  ),
+                                ),
+                              ] else if (videoItem.duration > 0)
+                                PBadge(
+                                  text: DurationUtils.formatDuration(
+                                    videoItem.duration,
+                                  ),
+                                  right: 6.0,
+                                  bottom: 6.0,
+                                  type: .gray,
+                                ),
+                            ],
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
+                    const SizedBox(width: 10),
+                  ],
                   content(theme),
                 ],
               ),
@@ -157,7 +160,9 @@ class VideoCardH extends StatelessWidget {
                         (e) => TextSpan(
                           text: e.text,
                           style: TextStyle(
-                            fontSize: theme.textTheme.bodyMedium!.fontSize,
+                            fontSize: Eink.hideCover
+                                ? 15
+                                : theme.textTheme.bodyMedium!.fontSize,
                             height: 1.42,
                             letterSpacing: 0.3,
                             color: e.isEm
@@ -176,7 +181,9 @@ class VideoCardH extends StatelessWidget {
                 videoItem.title,
                 textAlign: .start,
                 style: TextStyle(
-                  fontSize: theme.textTheme.bodyMedium!.fontSize,
+                  fontSize: Eink.hideCover
+                      ? 15
+                      : theme.textTheme.bodyMedium!.fontSize,
                   height: 1.42,
                   letterSpacing: 0.3,
                 ),
@@ -199,6 +206,15 @@ class VideoCardH extends StatelessWidget {
             Row(
               spacing: 8,
               children: [
+                if (Eink.hideCover && videoItem.duration > 0)
+                  Text(
+                    DurationUtils.formatDuration(videoItem.duration),
+                    style: TextStyle(
+                      fontSize: 12,
+                      height: 1,
+                      color: theme.colorScheme.outline,
+                    ),
+                  ),
                 StatWidget(
                   type: .play,
                   value: videoItem.stat.view,
@@ -207,6 +223,8 @@ class VideoCardH extends StatelessWidget {
                   type: .danmaku,
                   value: videoItem.stat.danmu,
                 ),
+                // 给右下角的弹出菜单按钮留出位置
+                if (Eink.hideCover) const SizedBox(width: 26),
               ],
             ),
           ],

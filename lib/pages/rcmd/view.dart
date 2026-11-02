@@ -6,6 +6,7 @@ import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/video_card/video_card_v.dart';
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/pages/rcmd/controller.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:get/get.dart';
@@ -54,9 +55,14 @@ class _RcmdPageState extends State<RcmdPage>
   late final gridDelegate = SliverGridDelegateWithExtentAndRatio(
     mainAxisSpacing: Style.cardSpace,
     crossAxisSpacing: Style.cardSpace,
-    maxCrossAxisExtent: Pref.recommendCardWidth,
-    childAspectRatio: Style.aspectRatio,
-    mainAxisExtent: MediaQuery.textScalerOf(context).scale(90),
+    maxCrossAxisExtent: Eink.hideCover
+        ? Pref.recommendCardWidth * 1.3
+        : Pref.recommendCardWidth,
+    // 墨水屏下卡片不含封面，高度完全由文字决定
+    childAspectRatio: Eink.hideCover ? 1000 : Style.aspectRatio,
+    mainAxisExtent: MediaQuery.textScalerOf(
+      context,
+    ).scale(Eink.hideCover ? 116 : 90),
   );
 
   Widget _buildBody(

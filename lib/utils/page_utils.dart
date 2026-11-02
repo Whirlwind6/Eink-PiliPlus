@@ -20,6 +20,7 @@ import 'package:PiliPlus/pages/fav_panel/view.dart';
 import 'package:PiliPlus/pages/share/view.dart';
 import 'package:PiliPlus/utils/android/android_helper.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
@@ -511,6 +512,11 @@ abstract final class PageUtils {
           );
         },
         settings: RouteSettings(arguments: Get.arguments),
+        // 墨水屏下默认的 50% 黑遮罩会让整屏变灰并触发全屏刷新，
+        // 这里换成极浅的灰，仅用于区分层级
+        barrierColor: Eink.enabled
+            ? const Color(0x14000000)
+            : const Color(0x80000000),
       ),
     );
   }

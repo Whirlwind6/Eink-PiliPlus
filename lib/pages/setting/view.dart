@@ -85,6 +85,11 @@ class _SettingPageState extends State<SettingPage> {
       icon: Icon(Icons.style_outlined),
     ),
     _SettingsModel(
+      type: .einkSetting,
+      subtitle: '隐藏封面、纯白背景、去阴影，减少闪烁与残影',
+      icon: Icon(Icons.auto_stories_outlined),
+    ),
+    _SettingsModel(
       type: .extraSetting,
       subtitle: '震动、搜索、收藏、ai、评论、动态、代理、更新检查等',
       icon: Icon(Icons.extension_outlined),

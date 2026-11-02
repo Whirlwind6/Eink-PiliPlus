@@ -254,6 +254,13 @@ abstract final class SettingBoxKey {
       liveCdnUrl = 'liveCdnUrl',
       saveReply = 'saveReply',
       appFont = 'appFont';
+
+  /// 墨水屏优化
+  static const String einkMode = 'einkMode',
+      einkHideCover = 'einkHideCover',
+      einkHideAvatar = 'einkHideAvatar',
+      einkHideVideo = 'einkHideVideo',
+      dynTabSort = 'dynTabSort';
 }
 
 abstract final class LocalCacheKey {

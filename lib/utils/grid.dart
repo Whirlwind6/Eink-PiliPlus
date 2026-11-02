@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:PiliPlus/common/skeleton/video_card_h.dart';
 import 'package:PiliPlus/common/sliver_single_child_delegate.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
 import 'package:flutter/rendering.dart';
 import 'package:material_ui/material_ui.dart';
@@ -19,13 +20,17 @@ mixin GridMixin {
 }
 
 abstract final class Grid {
-  static final double smallCardWidth = Pref.smallCardWidth;
+  /// 墨水屏下没有封面，卡片可以更宽一些：列数更少、每行文字更长、字号更大
+  static final double smallCardWidth = Eink.hideCover
+      ? Pref.smallCardWidth * 1.3
+      : Pref.smallCardWidth;
 
   static SliverGridDelegateWithMaxCrossAxisExtent videoCardHDelegate({
-    double mainAxisExtent = 110,
+    double? mainAxisExtent,
   }) => SliverGridDelegateWithMaxCrossAxisExtent(
     mainAxisSpacing: 2,
-    mainAxisExtent: mainAxisExtent,
+    // 墨水屏下卡片只剩文字，高度相应收窄
+    mainAxisExtent: mainAxisExtent ?? (Eink.hideCover ? 84 : 110),
     maxCrossAxisExtent: Grid.smallCardWidth * 2,
   );
 }

@@ -58,6 +58,7 @@ import 'package:PiliPlus/services/shutdown_timer_service.dart'
     show shutdownTimerService;
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/android/bindings.g.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
@@ -504,14 +505,17 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
                     final brightness = colorScheme.brightness;
                     final Brightness statusBarBrightness;
                     final Brightness statusBarIconBrightness;
-                    final backgroundColor = isPortrait && scrollRatio > 0
+                    // 墨水屏下顶部不再使用黑色条，避免大面积深色背景
+                    final backgroundColor = Eink.enabled
+                        ? colorScheme.surface
+                        : isPortrait && scrollRatio > 0
                         ? Color.lerp(
                             Colors.black,
                             colorScheme.surface,
                             scrollRatio,
                           )!
                         : Colors.black;
-                    if (isPortrait && scrollRatio >= 0.5) {
+                    if (Eink.enabled || (isPortrait && scrollRatio >= 0.5)) {
                       statusBarBrightness = brightness;
                       statusBarIconBrightness = brightness.reverse;
                     } else {
@@ -1454,9 +1458,10 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        const Positioned.fill(
+        Positioned.fill(
           child: ColoredBox(
-            color: Colors.black,
+            // 墨水屏下播放器画面不渲染，底色若是黑色会漏出黑边
+            color: Eink.enabled ? Colors.white : Colors.black,
             isAntiAlias: false,
           ),
         ),
@@ -1469,19 +1474,23 @@ class _VideoDetailPageVState extends State<VideoDetailPageV>
               child: GestureDetector(
                 onTap: handlePlay,
                 behavior: .opaque,
-                child: Obx(
-                  () => NetworkImgLayer(
+                child: Obx(() {
+                  // 先读一次，保证 Obx 仍有响应式依赖（封面异步到达时能重建）
+                  final cover = videoDetailController.cover.value;
+                  // 墨水屏下封面同样不加载；保留这一层是为了让点击仍能开始播放
+                  if (Eink.enabled) return const SizedBox.expand();
+                  return NetworkImgLayer(
                     type: .emote,
                     quality: 60,
-                    src: videoDetailController.cover.value,
+                    src: cover,
                     width: width,
                     height: height,
                     cacheWidth: true,
                     getPlaceHolder: () => Center(
                       child: Image.asset(Assets.loading),
                     ),
-                  ),
-                ),
+                  );
+                }),
               ),
             );
           }

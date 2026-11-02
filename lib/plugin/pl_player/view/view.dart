@@ -54,6 +54,7 @@ import 'package:PiliPlus/utils/cache_manager.dart';
 import 'package:PiliPlus/utils/connectivity_utils.dart';
 import 'package:PiliPlus/utils/desktop/window_controller.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
 import 'package:PiliPlus/utils/feed_back.dart';
@@ -1994,11 +1995,14 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
   }
 
   Widget get _videoWidget {
+    // 墨水屏下不渲染视频画面：整块画面是刷新最频繁的区域，
+    // 关掉后只听声音，屏幕保持静止白底，不会有残影
+    final hideVideo = Eink.hideVideo;
     return Container(
       clipBehavior: .none,
       width: maxWidth,
       height: maxHeight,
-      color: widget.fill,
+      color: hideVideo ? Colors.white : widget.fill,
       child: Obx(
         () => MouseInteractiveViewer(
           scaleEnabled: !plPlayerController.controlsLock.value,
@@ -2035,11 +2039,18 @@ class _PLVideoPlayerState extends State<PLVideoPlayer>
                   child: FittedBox(
                     fit: videoFit.boxFit,
                     alignment: widget.alignment,
-                    child: SimpleVideo(
-                      controller: plPlayerController.videoController!,
-                      fill: widget.fill,
-                      aspectRatio: videoFit.aspectRatio,
-                    ),
+                    child: hideVideo
+                        // 尺寸取容器本身，避免 FittedBox 缩放后溢出到画面区之外
+                        ? SizedBox(
+                            width: maxWidth,
+                            height: maxHeight,
+                            child: const ColoredBox(color: Colors.white),
+                          )
+                        : SimpleVideo(
+                            controller: plPlayerController.videoController!,
+                            fill: widget.fill,
+                            aspectRatio: videoFit.aspectRatio,
+                          ),
                   ),
                 );
               },

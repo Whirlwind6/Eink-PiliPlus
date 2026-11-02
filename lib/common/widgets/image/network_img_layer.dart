@@ -1,6 +1,7 @@
 import 'package:PiliPlus/common/assets.dart';
 import 'package:PiliPlus/common/style.dart';
 import 'package:PiliPlus/models/common/image_type.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/image_utils.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
@@ -44,6 +45,12 @@ class NetworkImgLayer extends StatelessWidget {
   Widget build(BuildContext context) {
     final isEmote = type == ImageType.emote;
     final isAvatar = type == ImageType.avatar;
+    // 墨水屏：直接不加载图片，既省流量也避免图片刷新带来的闪烁与残影
+    if (Eink.enabled &&
+        !isEmote &&
+        (isAvatar ? Eink.hideAvatar : Eink.hideCover)) {
+      return _einkPlaceholder(isAvatar: isAvatar);
+    }
     if (src?.isNotEmpty == true) {
       Widget child = _buildImage(context, isEmote: isEmote, isAvatar: isAvatar);
       if (isEmote) {
@@ -57,6 +64,19 @@ class NetworkImgLayer extends StatelessWidget {
       return getPlaceHolder?.call() ??
           _placeholder(context, isEmote: isEmote, isAvatar: isAvatar);
     }
+  }
+
+  /// 墨水屏下的占位块：只画一块极浅的灰底，不做任何图片请求
+  Widget _einkPlaceholder({required bool isAvatar}) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        shape: isAvatar ? BoxShape.circle : BoxShape.rectangle,
+        color: isAvatar ? const Color(0xFFECECEC) : const Color(0xFFF5F5F5),
+        borderRadius: isAvatar ? null : borderRadius,
+      ),
+    );
   }
 
   Widget _buildImage(

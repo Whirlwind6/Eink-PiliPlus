@@ -8,6 +8,7 @@ import 'package:PiliPlus/pages/common/common_data_controller.dart';
 import 'package:PiliPlus/pages/dynamics_tab/controller.dart';
 import 'package:PiliPlus/services/account_service.dart';
 import 'package:PiliPlus/utils/accounts.dart';
+import 'package:PiliPlus/utils/dyn_tabs.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
@@ -36,10 +37,12 @@ class DynamicsController
   final AccountService accountService = Get.find<AccountService>();
 
   DynamicsTabController? get controller {
+    // 标签可由用户在设置里裁剪，这里用同一份列表换算，避免下标错位
+    final tabs = DynTabs.list;
+    final index = tabController.index;
+    if (index < 0 || index >= tabs.length) return null;
     try {
-      return Get.find<DynamicsTabController>(
-        tag: DynamicsTabType.values[tabController.index].name,
-      );
+      return Get.find<DynamicsTabController>(tag: tabs[index].name);
     } catch (_) {
       return null;
     }
@@ -48,16 +51,25 @@ class DynamicsController
   @override
   void onInit() {
     super.onInit();
+    final tabs = DynTabs.list;
+    final defaultIndex = Pref.defaultDynamicTypeIndex;
+    final defaultType =
+        defaultIndex >= 0 && defaultIndex < DynamicsTabType.values.length
+        ? DynamicsTabType.values[defaultIndex]
+        : DynamicsTabType.all;
+    final initialIndex = tabs.indexOf(defaultType);
     tabController = TabController(
       vsync: this,
-      length: DynamicsTabType.values.length,
-      initialIndex: Pref.defaultDynamicTypeIndex,
+      length: tabs.length,
+      initialIndex: initialIndex < 0 ? 0 : initialIndex,
     );
     queryData();
   }
 
   void _jumpToTab(int mid) {
-    tabController.index = mid == -1 ? 0 : 4;
+    // 「UP」标签可能被用户删掉，找不到时退回第一个标签，避免下标越界
+    final index = mid == -1 ? 0 : DynTabs.indexOf(DynamicsTabType.up);
+    tabController.index = index < 0 ? 0 : index;
   }
 
   void onSelectUp(int mid) {

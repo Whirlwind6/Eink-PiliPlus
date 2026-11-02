@@ -11,6 +11,7 @@ import 'package:PiliPlus/models_new/video/video_detail/dimension.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:PiliPlus/utils/extension/dimension_ext.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:PiliPlus/utils/page_utils.dart';
@@ -98,36 +99,40 @@ class VideoCardV extends StatelessWidget {
             child: Column(
               crossAxisAlignment: .start,
               children: [
-                AspectRatio(
-                  aspectRatio: Style.aspectRatio,
-                  child: LayoutBuilder(
-                    builder: (context, boxConstraints) {
-                      double maxWidth = boxConstraints.maxWidth;
-                      double maxHeight = boxConstraints.maxHeight;
-                      return Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          NetworkImgLayer(
-                            src: videoItem.cover,
-                            width: maxWidth,
-                            height: maxHeight,
-                            borderRadius: const .vertical(top: .circular(12)),
-                          ),
-                          if (videoItem.duration > 0)
-                            PBadge(
-                              bottom: 6,
-                              right: 7,
-                              size: .small,
-                              type: .gray,
-                              text: DurationUtils.formatDuration(
-                                videoItem.duration,
-                              ),
+                if (!Eink.hideCover)
+                  AspectRatio(
+                    aspectRatio: Style.aspectRatio,
+                    child: LayoutBuilder(
+                      builder: (context, boxConstraints) {
+                        double maxWidth = boxConstraints.maxWidth;
+                        double maxHeight = boxConstraints.maxHeight;
+                        return Stack(
+                          clipBehavior: Clip.none,
+                          children: [
+                            NetworkImgLayer(
+                              src: videoItem.cover,
+                              width: maxWidth,
+                              height: maxHeight,
+                              borderRadius: const .vertical(top: .circular(12)),
                             ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
+                            if (videoItem.duration > 0)
+                              PBadge(
+                                bottom: 6,
+                                right: 7,
+                                size: .small,
+                                type: .gray,
+                                text: DurationUtils.formatDuration(
+                                  videoItem.duration,
+                                ),
+                              ),
+                          ],
+                        );
+                      },
+                    ),
+                  )
+                else
+                  // 墨水屏：封面整块去掉，只留一点上边距
+                  const SizedBox(height: 8),
                 content(context),
               ],
             ),
@@ -160,9 +165,13 @@ class VideoCardV extends StatelessWidget {
             Expanded(
               child: Text(
                 videoItem.title,
-                maxLines: 2,
+                maxLines: Eink.hideCover ? 3 : 2,
                 overflow: .ellipsis,
-                style: const TextStyle(height: 1.38),
+                style: TextStyle(
+                  height: 1.38,
+                  // 墨水屏上没有封面，标题字号可适当加大以便阅读
+                  fontSize: Eink.hideCover ? 15 : null,
+                ),
               ),
             ),
             videoStat(theme),
@@ -228,6 +237,16 @@ class VideoCardV extends StatelessWidget {
   Widget videoStat(ThemeData theme) {
     return Row(
       children: [
+        if (Eink.hideCover && videoItem.duration > 0) ...[
+          Text(
+            DurationUtils.formatDuration(videoItem.duration),
+            style: TextStyle(
+              fontSize: theme.textTheme.labelSmall!.fontSize,
+              color: theme.colorScheme.outline,
+            ),
+          ),
+          const SizedBox(width: 6),
+        ],
         StatWidget(
           type: .play,
           value: videoItem.stat.view,
@@ -239,7 +258,8 @@ class VideoCardV extends StatelessWidget {
             value: videoItem.stat.danmu,
           ),
         ],
-        if (videoItem is RcmdVideoItemModel) ...[
+        // 墨水屏下这一行已经多塞了时长，宽度偏紧，日期就不再占位，避免整行溢出
+        if (videoItem is RcmdVideoItemModel && !Eink.hideCover) ...[
           const Spacer(),
           Text.rich(
             maxLines: 1,

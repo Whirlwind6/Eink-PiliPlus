@@ -1,5 +1,6 @@
 import 'package:PiliPlus/pages/setting/models/dm_settings.dart';
 import 'package:PiliPlus/pages/setting/models/dyn_settings.dart';
+import 'package:PiliPlus/pages/setting/models/eink_settings.dart';
 import 'package:PiliPlus/pages/setting/models/extra_settings.dart';
 import 'package:PiliPlus/pages/setting/models/model.dart';
 import 'package:PiliPlus/pages/setting/models/play_settings.dart';
@@ -18,6 +19,7 @@ enum SettingType {
   replySetting('评论设置'),
   dynSetting('动态设置'),
   styleSetting('外观设置'),
+  einkSetting('墨水屏模式'),
   extraSetting('其它设置'),
   webdavSetting('WebDAV 设置'),
   about('关于'),
@@ -35,6 +37,7 @@ enum SettingType {
     .dynSetting => dynSettings,
     .replySetting => replySettings,
     .styleSetting => styleSettings,
+    .einkSetting => einkSettings,
     .extraSetting => extraSettings,
     .webdavSetting || .about => throw UnimplementedError(),
   };

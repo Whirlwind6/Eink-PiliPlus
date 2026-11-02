@@ -4,6 +4,7 @@ import 'package:PiliPlus/models/dynamics/result.dart'
     show DynamicsDataModel, ItemModulesModel;
 import 'package:PiliPlus/pages/main/controller.dart';
 import 'package:PiliPlus/pages/setting/models/model.dart';
+import 'package:PiliPlus/utils/dyn_tabs.dart';
 import 'package:PiliPlus/utils/storage.dart';
 import 'package:PiliPlus/utils/storage_key.dart';
 import 'package:PiliPlus/utils/storage_pref.dart';
@@ -61,11 +62,25 @@ List<SettingsModel> get dynSettings => [
     setKey: SettingBoxKey.showDynActionBar,
     defaultVal: true,
   ),
+  NormalModel(
+    onTap: (context, setState) => Get.toNamed(
+      '/barSetting',
+      arguments: {
+        'key': SettingBoxKey.dynTabSort,
+        'defaultBars': DynamicsTabType.values,
+        'title': '动态标签页',
+      },
+    ),
+    title: '动态标签页',
+    subtitle: '删除或调换动态页顶部的标签，例如去掉「番剧」「UP」',
+    leading: const Icon(Icons.toc_outlined),
+  ),
   PopupModel(
     title: '动态展示',
     leading: const Icon(Icons.dynamic_feed_rounded),
     value: () => Pref.defaultDynamicType,
-    items: DynamicsTabType.values.take(4),
+    // UP 标签用于按 UP 主筛选，不作为默认展示类型
+    items: DynTabs.list.where((e) => e != DynamicsTabType.up).toList(),
     onSelected: (value, setState) => GStorage.setting
         .put(SettingBoxKey.defaultDynamicType, value.index)
         .whenComplete(setState),

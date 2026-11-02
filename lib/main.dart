@@ -19,6 +19,7 @@ import 'package:PiliPlus/utils/cache_manager.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/desktop/calc_window_position.dart';
 import 'package:PiliPlus/utils/device_utils.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:PiliPlus/utils/extension/core_palettes_ext.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
 import 'package:PiliPlus/utils/font_utils.dart';
@@ -103,6 +104,7 @@ void main() async {
     DeviceUtils.exitApp();
   }
   ScaledWidgetsFlutterBinding.instance.scaleFactor = Pref.uiScale;
+  Eink.sync();
   await Future.wait([
     _initDownPath(),
     _initTmpPath(),
@@ -254,6 +256,9 @@ class MyApp extends StatelessWidget {
   static ColorScheme? _light, _dark;
 
   static (ThemeData, ThemeData) getAllTheme() {
+    // updateMyAppTheme() 会直接调用这里重建主题，此时不会经过 build，
+    // 先同步一次，保证 ThemeUtils.theme 判断用的是最新设置
+    ThemeUtils.themeMode = Pref.themeMode;
     final dynamicColor = _light != null && _dark != null && Pref.dynamicColor;
 
     final ColorScheme lightScheme, darkScheme;
@@ -262,9 +267,11 @@ class MyApp extends StatelessWidget {
       darkScheme = _dark!;
     } else {
       final customColor = Pref.customColor;
-      final brandColor =
-          colorThemeTypes.elementAtOrNull(customColor)?.color ??
-          Color(customColor);
+      final brandColor = Eink.enabled
+          // 墨水屏：使用中性灰作为种子色，避免出现彩色主题
+          ? const Color(0xFF5C5C5C)
+          : colorThemeTypes.elementAtOrNull(customColor)?.color ??
+                Color(customColor);
       final variant = Pref.schemeVariant;
 
       lightScheme = brandColor.asColorSchemeSeed(variant, .light);
@@ -277,8 +284,10 @@ class MyApp extends StatelessWidget {
         isDynamic: dynamicColor,
       ),
       ThemeUtils.darkTheme = ThemeUtils.getThemeData(
-        isDark: true,
-        colorScheme: darkScheme,
+        // 墨水屏下即使某些路径仍取到 darkTheme（例如系统深色且 themeMode
+        // 尚未刷新），也必须给出一份浅色主题，否则整屏又变黑
+        isDark: !Eink.enabled,
+        colorScheme: Eink.enabled ? lightScheme : darkScheme,
         isDynamic: dynamicColor,
       ),
     );

@@ -96,11 +96,30 @@ abstract final class Pref {
 
   static ThemeType get themeType => ThemeType.values[_themeTypeInt];
 
-  static ThemeMode get themeMode => switch (_themeTypeInt) {
-    0 => ThemeMode.light,
-    1 => ThemeMode.dark,
-    _ => ThemeMode.system,
-  };
+  /// 墨水屏优化总开关
+  static bool get einkMode =>
+      _setting.get(SettingBoxKey.einkMode, defaultValue: false);
+
+  /// 隐藏封面/内容图片（默认开启，配合墨水屏模式使用）
+  static bool get einkHideCover =>
+      _setting.get(SettingBoxKey.einkHideCover, defaultValue: true);
+
+  /// 隐藏头像
+  static bool get einkHideAvatar =>
+      _setting.get(SettingBoxKey.einkHideAvatar, defaultValue: false);
+
+  /// 不渲染视频画面（只听声音），墨水屏下画面刷新代价太高
+  static bool get einkHideVideo =>
+      _setting.get(SettingBoxKey.einkHideVideo, defaultValue: true);
+
+  /// 墨水屏模式下强制浅色，避免出现深色背景
+  static ThemeMode get themeMode => einkMode
+      ? ThemeMode.light
+      : switch (_themeTypeInt) {
+          0 => ThemeMode.light,
+          1 => ThemeMode.dark,
+          _ => ThemeMode.system,
+        };
 
   static List<double> get springDescription => List<double>.from(
     _setting.get(SettingBoxKey.springDescription) ??
@@ -544,8 +563,9 @@ abstract final class Pref {
   static bool get showDynActionBar =>
       _setting.get(SettingBoxKey.showDynActionBar, defaultValue: true);
 
+  /// 墨水屏模式下播放页同样保持浅色
   static bool get darkVideoPage =>
-      _setting.get(SettingBoxKey.darkVideoPage, defaultValue: false);
+      !einkMode && _setting.get(SettingBoxKey.darkVideoPage, defaultValue: false);
 
   static bool get enableSlideVolumeBrightness => _setting.get(
     SettingBoxKey.enableSlideVolumeBrightness,
@@ -738,8 +758,10 @@ abstract final class Pref {
   static int get customColor =>
       _setting.get(SettingBoxKey.customColor, defaultValue: 0);
 
+  /// 墨水屏下不使用动态取色，避免彩色主题影响灰阶观感
   static bool get dynamicColor =>
       !Platform.isIOS &&
+      !einkMode &&
       _setting.get(SettingBoxKey.dynamicColor, defaultValue: true);
 
   static bool get enableSystemProxy =>
