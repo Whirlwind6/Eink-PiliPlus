@@ -18,7 +18,8 @@ List<SettingsModel> get einkSettings => [
     subtitle: '强制浅色、纯白背景，去掉阴影与渐变，并默认隐藏所有封面图',
     leading: const Icon(Icons.auto_stories_outlined),
     setKey: SettingBoxKey.einkMode,
-    defaultVal: false,
+    // 与 Pref.einkMode 的默认值保持一致，否则开关显示「关」但界面已是墨水屏
+    defaultVal: true,
     onChanged: _onEinkChanged,
   ),
   SwitchModel(

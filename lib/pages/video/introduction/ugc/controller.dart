@@ -88,6 +88,13 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
   Timer? _resumeTimer;
   int _lastSavedPositionMs = 0;
 
+  /// 本次进入时恢复到的位置，用于防止「刚进来还没 seek 到就退出」把记录冲掉
+  int _restoredPositionMs = 0;
+  int _restoredAt = 0;
+
+  /// 最近一次切集的时刻：切集后播放器里还是上一集的位置，这段时间不写进度
+  int _switchedAt = 0;
+
   @override
   void onInit() {
     super.onInit();
@@ -131,15 +138,26 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
           videoDetailCtr.plPlayerController.positionInMilliseconds;
       if (positionMs <= 0) return;
       if (!force && (positionMs - _lastSavedPositionMs).abs() < 10000) return;
+      final now = DateTime.now().millisecondsSinceEpoch;
+      // 切集后新视频还没起播，读到的仍是上一集的位置，别写到新集名下
+      if (now - _switchedAt < 20000) return;
+      // 刚恢复续播还没跳到位就退出：此时读到的是 0～十几秒，不要把旧记录覆盖掉
+      if (_restoredPositionMs > 15000 &&
+          positionMs < 15000 &&
+          now - _restoredAt < 180000) {
+        return;
+      }
       _lastSavedPositionMs = positionMs;
       _saveResumePoint(positionMs: positionMs);
     } catch (_) {}
   }
 
-  /// 自动接上合集里上次看的那一集。
+  /// 自动接上合集里上次看的位置。
   ///
-  /// 只在「从合集第一集进入」时触发，点到其他集不会被劫持，
-  /// 因为那说明用户就是想看那一集。
+  /// 分两种情况：
+  /// 1. 进入的正是上次看的那一集：只恢复播放位置，不切集；
+  /// 2. 从合集第一集进入：跳到上次看的那一集和位置。
+  /// 点到合集的其它集不会被劫持，因为那说明用户就是想看那一集。
   void _maybeResumeSeason(VideoDetailData data) {
     if (_resumeChecked) return;
     try {
@@ -150,12 +168,35 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
       if (seasonId == null || sections == null || sections.isEmpty) return;
       final firstEpisodes = sections.first.episodes;
       if (firstEpisodes == null || firstEpisodes.isEmpty) return;
-      // 第一次没拿到合集信息时不要锁定，留给后续刷新再判断
-      if (firstEpisodes.first.bvid != bvid) return;
+      // 拿到合集信息后只判断一次；之后切集、刷新简介都不再触发，避免来回跳
       _resumeChecked = true;
 
       final point = UgcResume.read(seasonId);
-      if (point == null || point.bvid == bvid) return;
+      if (point == null) return;
+
+      // 进入的就是上次看的那一集：只把播放位置接上
+      if (point.bvid == bvid) {
+        final position = Duration(milliseconds: point.positionMs);
+        if (position <= Duration.zero) return;
+        _restoredPositionMs = point.positionMs;
+        _restoredAt = DateTime.now().millisecondsSinceEpoch;
+        if (!videoDetailCtr.videoState.value) {
+          // 播放器还没起播，交给 playerInit 定位
+          videoDetailCtr.defaultST = position;
+        }
+        // playerInit 可能已经读过 defaultST 了，起播后再补一次
+        _seekToWhenReady(position);
+        if (kDebugMode) {
+          debugPrint('ugc resume: same ep, seek ${point.positionMs}ms');
+        }
+        if (point.positionMs > 30000) {
+          SmartDialog.showToast('已恢复到上次观看位置');
+        }
+        return;
+      }
+
+      // 其余情况只有从合集第一集进入才自动跳到上次那一集
+      if (firstEpisodes.first.bvid != bvid) return;
 
       BaseEpisodeItem? target;
       var targetIndex = 0;
@@ -187,6 +228,29 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
     } catch (e) {
       if (kDebugMode) debugPrint('ugc resume: $e');
     }
+  }
+
+  /// 等播放器真正起播后把位置补上。
+  ///
+  /// playerInit 会在开头读取一次 defaultST，若简介接口晚于这一刻返回，
+  /// 只设 defaultST 不会被消费，所以这里再兜一次。
+  void _seekToWhenReady(Duration target, {int attempt = 0}) {
+    if (isClosed || attempt > 20) return;
+    final player = videoDetailCtr.plPlayerController;
+    if (videoDetailCtr.videoState.value) {
+      final total = player.duration.value;
+      // 记录点已经接近结尾（视频被换过、或上次看完了）：不再跳，免得一进去就播完
+      if (total > 0 && target.inMilliseconds >= total - 2000) return;
+      final current = player.positionInMilliseconds;
+      if ((current - target.inMilliseconds).abs() > 3000) {
+        unawaited(player.seekTo(target));
+      }
+      return;
+    }
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () => _seekToWhenReady(target, attempt: attempt + 1),
+    );
   }
 
   // 获取视频简介&分p
@@ -708,6 +772,7 @@ class UgcIntroController extends CommonIntroController with ReloadMixin {
 
       // 记住「看到第几集」，下次从第一集进入时自动接上
       _lastSavedPositionMs = resumePositionMs ?? 0;
+      _switchedAt = DateTime.now().millisecondsSinceEpoch;
       _saveResumePoint(positionMs: _lastSavedPositionMs);
       queryOnlineTotal();
       return true;

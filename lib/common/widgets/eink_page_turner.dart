@@ -12,8 +12,8 @@ class EinkPageTurner extends StatelessWidget {
   const EinkPageTurner({
     super.key,
     this.controller,
-    this.width = 40,
-    this.height = 40,
+    this.width = 56,
+    this.height = 56,
   });
 
   /// 要控制的列表；为空时回退到 [PrimaryScrollController]
@@ -33,7 +33,7 @@ class EinkPageTurner extends StatelessWidget {
       color: Colors.white,
       clipBehavior: Clip.antiAlias,
       shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderRadius: BorderRadius.all(Radius.circular(28)),
         side: BorderSide(color: Color(0xFFD8D8D8), width: 0.8),
       ),
       child: Column(
@@ -58,7 +58,7 @@ class EinkPageTurner extends StatelessWidget {
         height: height,
         child: Icon(
           up ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-          size: 22,
+          size: 32,
           color: const Color(0xFF3C3C3C),
         ),
       ),

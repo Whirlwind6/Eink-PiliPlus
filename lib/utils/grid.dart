@@ -20,10 +20,7 @@ mixin GridMixin {
 }
 
 abstract final class Grid {
-  /// 墨水屏下没有封面，卡片可以更宽一些：列数更少、每行文字更长、字号更大
-  static final double smallCardWidth = Eink.hideCover
-      ? Pref.smallCardWidth * 1.3
-      : Pref.smallCardWidth;
+  static final double smallCardWidth = Pref.smallCardWidth;
 
   static SliverGridDelegateWithMaxCrossAxisExtent videoCardHDelegate({
     double? mainAxisExtent,

@@ -33,6 +33,7 @@ import 'package:PiliPlus/utils/color_utils.dart';
 import 'package:PiliPlus/utils/danmaku_utils.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
@@ -121,7 +122,10 @@ class ReplyItemGrpc extends StatelessWidget {
     );
 
     Widget child = Padding(
-      padding: const .fromLTRB(12, 14, 8, 5),
+      // 墨水屏下整体收紧，减少一屏内的留白
+      padding: Eink.enabled
+          ? const EdgeInsets.fromLTRB(12, 10, 8, 4)
+          : const EdgeInsets.fromLTRB(12, 14, 8, 5),
       child: _buildContent(context, colorScheme),
     );
     if (needDivider) {
@@ -315,7 +319,7 @@ class ReplyItemGrpc extends StatelessWidget {
         ],
       ),
       style: TextStyle(
-        height: 1.75,
+        height: Eink.enabled ? 1.4 : 1.75,
         fontSize: 12,
         color: colorScheme.onSurfaceVariant,
       ),
@@ -330,7 +334,7 @@ class ReplyItemGrpc extends StatelessWidget {
       crossAxisAlignment: .start,
       children: [
         _buildHeader(context, colorScheme),
-        const SizedBox(height: 10),
+        SizedBox(height: Eink.enabled ? 6 : 10),
         if (replyControl.hasVoteOption())
           Padding(
             padding: padding,
@@ -340,7 +344,11 @@ class ReplyItemGrpc extends StatelessWidget {
           padding: padding,
           child: TextMore.rich(
             primary: colorScheme.primary,
-            style: const TextStyle(height: 1.75, fontSize: 14),
+            style: TextStyle(
+              // 默认 1.75 在放大字号后行间空隙过大，墨水屏下压到 1.4
+              height: Eink.enabled ? 1.4 : 1.75,
+              fontSize: 14,
+            ),
             maxLines: replyLevel == 1 ? replyLengthLimit : null,
             TextSpan(
               children: [
@@ -394,7 +402,9 @@ class ReplyItemGrpc extends StatelessWidget {
         ],
         if (replyLevel == 1 && replyItem.count > Int64.ZERO) ...[
           Padding(
-            padding: const EdgeInsets.only(top: 5, bottom: 12),
+            padding: Eink.enabled
+                ? const EdgeInsets.only(top: 3, bottom: 8)
+                : const EdgeInsets.only(top: 5, bottom: 12),
             child: replyItemRow(context, colorScheme, replyItem.replies),
           ),
         ],
@@ -618,7 +628,7 @@ class ReplyItemGrpc extends StatelessWidget {
                     padding: padding,
                     child: TextEllipsis.rich(
                       style: TextStyle(
-                        height: 1.6,
+                        height: Eink.enabled ? 1.4 : 1.6,
                         fontSize: 14,
                         color: colorScheme.onSurface.withValues(alpha: 0.85),
                       ),

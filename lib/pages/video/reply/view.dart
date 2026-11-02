@@ -122,7 +122,8 @@ class _VideoReplyPanelState extends State<VideoReplyPanel>
               ),
               // 墨水屏翻页键，压在发表评论按钮上方
               Positioned(
-                right: kFloatingActionButtonMargin + 8,
+                // 按钮加大后往右贴一点，少挡评论内容
+                right: 8,
                 bottom: padding.bottom + kFloatingActionButtonMargin + 68,
                 child: EinkPageTurner(
                   controller: widget.isNested
