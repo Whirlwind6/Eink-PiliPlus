@@ -1,6 +1,7 @@
 import 'package:PiliPlus/common/skeleton/video_reply.dart';
 import 'package:PiliPlus/common/sliver_single_child_delegate.dart';
 import 'package:PiliPlus/common/style.dart';
+import 'package:PiliPlus/common/widgets/eink_page_turner.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/common/widgets/scaffold/simple_scaffold.dart';
@@ -74,46 +75,61 @@ class _VideoReplyPanelState extends State<VideoReplyPanel>
         onRefresh: controller.onRefresh,
         isClampingScrollPhysics: widget.isNested,
         child: ScaffoldLayout(
-          body: CustomScrollView(
-            controller: widget.isNested ? null : controller.scrollController,
-            physics: const AlwaysScrollableScrollPhysics(),
-            key: const PageStorageKey(_VideoReplyPanelState),
-            slivers: [
-              SliverFloatingHeaderWidget(
-                backgroundColor: colorScheme.surface,
-                child: Padding(
-                  padding: const .fromLTRB(12, 2.5, 6, 2.5),
-                  child: Obx(() {
-                    final sortType = controller.sortType.value;
-                    return Row(
-                      mainAxisAlignment: .spaceBetween,
-                      children: [
-                        Text(
-                          sortType.desc,
-                          style: const TextStyle(fontSize: 13),
-                        ),
-                        TextButton.icon(
-                          style: Style.buttonStyle,
-                          onPressed: controller.queryBySort,
-                          icon: Icon(
-                            Icons.sort,
-                            size: 16,
-                            color: colorScheme.secondary,
-                          ),
-                          label: Text(
-                            sortType.descShort,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: colorScheme.secondary,
+          body: Stack(
+            fit: StackFit.expand,
+            children: [
+              CustomScrollView(
+                controller: widget.isNested ? null : controller.scrollController,
+                physics: const AlwaysScrollableScrollPhysics(),
+                key: const PageStorageKey(_VideoReplyPanelState),
+                slivers: [
+                  SliverFloatingHeaderWidget(
+                    backgroundColor: colorScheme.surface,
+                    child: Padding(
+                      padding: const .fromLTRB(12, 2.5, 6, 2.5),
+                      child: Obx(() {
+                        final sortType = controller.sortType.value;
+                        return Row(
+                          mainAxisAlignment: .spaceBetween,
+                          children: [
+                            Text(
+                              sortType.desc,
+                              style: const TextStyle(fontSize: 13),
                             ),
-                          ),
-                        ),
-                      ],
-                    );
-                  }),
+                            TextButton.icon(
+                              style: Style.buttonStyle,
+                              onPressed: controller.queryBySort,
+                              icon: Icon(
+                                Icons.sort,
+                                size: 16,
+                                color: colorScheme.secondary,
+                              ),
+                              label: Text(
+                                sortType.descShort,
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: colorScheme.secondary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ),
+                  Obx(() => _buildBody(controller.loadingState.value)),
+                ],
+              ),
+              // 墨水屏翻页键，压在发表评论按钮上方
+              Positioned(
+                right: kFloatingActionButtonMargin + 8,
+                bottom: padding.bottom + kFloatingActionButtonMargin + 68,
+                child: EinkPageTurner(
+                  controller: widget.isNested
+                      ? null
+                      : controller.scrollController,
                 ),
               ),
-              Obx(() => _buildBody(controller.loadingState.value)),
             ],
           ),
           fab: SlideTransition(

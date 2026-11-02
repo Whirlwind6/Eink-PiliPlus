@@ -27,6 +27,7 @@ import 'package:PiliPlus/pages/fav_detail/controller.dart'
 import 'package:PiliPlus/pages/group_panel/view.dart';
 import 'package:PiliPlus/pages/login/geetest/geetest_webview_dialog.dart';
 import 'package:PiliPlus/utils/accounts.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
@@ -193,7 +194,7 @@ abstract final class RequestUtils {
               DialogOption(
                 onPressed: () async {
                   Get.back();
-                  final result = await showModalBottomSheet<Set<int>>(
+                  final result = await showEinkSheet<Set<int>>(
                     context: context,
                     useSafeArea: true,
                     isScrollControlled: true,

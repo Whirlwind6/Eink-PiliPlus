@@ -7,6 +7,7 @@ import 'package:PiliPlus/pages/search/widgets/search_text.dart';
 import 'package:PiliPlus/pages/search_panel/controller.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/id_utils.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
@@ -86,7 +87,7 @@ class SearchVideoController
   bool customPubEndDate = false;
 
   void onShowFilterDialog(BuildContext context) {
-    showModalBottomSheet(
+    showEinkSheet(
       context: context,
       useSafeArea: true,
       isScrollControlled: true,

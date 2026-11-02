@@ -17,6 +17,7 @@ import 'package:PiliPlus/pages/pgc_review/child/controller.dart';
 import 'package:PiliPlus/pages/pgc_review/post/view.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/bili_utils.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
@@ -138,7 +139,7 @@ class _PgcReviewChildPageState extends State<PgcReviewChildPage>
               child: const Text('编辑', style: TextStyle(fontSize: 14)),
               onPressed: () {
                 Get.back();
-                showModalBottomSheet(
+                showEinkSheet(
                   context: context,
                   useSafeArea: true,
                   isScrollControlled: true,

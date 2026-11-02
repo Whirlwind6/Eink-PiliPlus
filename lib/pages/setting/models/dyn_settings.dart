@@ -68,11 +68,15 @@ List<SettingsModel> get dynSettings => [
       arguments: {
         'key': SettingBoxKey.dynTabSort,
         'defaultBars': DynamicsTabType.values,
+        // 默认不勾「番剧」「UP」，与 DynTabs.defaultTypes 保持一致
+        'defaultChecked': DynTabs.defaultTypes
+            .map((e) => e.index)
+            .toList(),
         'title': '动态标签页',
       },
     ),
     title: '动态标签页',
-    subtitle: '删除或调换动态页顶部的标签，例如去掉「番剧」「UP」',
+    subtitle: '默认不含「番剧」「UP」，可在此加回或调整顺序',
     leading: const Icon(Icons.toc_outlined),
   ),
   PopupModel(

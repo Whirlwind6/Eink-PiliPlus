@@ -24,6 +24,7 @@ import 'package:PiliPlus/pages/common/dyn/common_dyn_page.dart';
 import 'package:PiliPlus/pages/dynamics_repost/view.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
@@ -505,7 +506,7 @@ class _ArticlePageState extends CommonDynPageState<ArticlePage>
                               return;
                             }
                             final summary = controller.summary;
-                            showModalBottomSheet(
+                            showEinkSheet(
                               context: context,
                               isScrollControlled: true,
                               useSafeArea: true,

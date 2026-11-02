@@ -33,6 +33,7 @@ import 'package:PiliPlus/pages/dynamics/widgets/dynamic_panel.dart';
 import 'package:PiliPlus/pages/dynamics_create/view.dart';
 import 'package:PiliPlus/pages/dynamics_detail/controller.dart';
 import 'package:PiliPlus/pages/dynamics_repost/view.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
@@ -562,7 +563,7 @@ class _DynamicDetailPageState extends CommonDynPageMultiState<DynamicDetailPage>
                         icon: FontAwesomeIcons.shareFromSquare,
                         text: '转发',
                         stat: forward,
-                        onPressed: (_) => showModalBottomSheet(
+                        onPressed: (_) => showEinkSheet(
                           context: context,
                           isScrollControlled: true,
                           useSafeArea: true,

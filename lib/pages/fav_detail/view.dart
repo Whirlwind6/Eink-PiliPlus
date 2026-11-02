@@ -16,6 +16,7 @@ import 'package:PiliPlus/pages/dynamics_repost/view.dart';
 import 'package:PiliPlus/pages/fav_detail/controller.dart';
 import 'package:PiliPlus/pages/fav_detail/widget/fav_video_card.dart';
 import 'package:PiliPlus/utils/bili_utils.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
 import 'package:PiliPlus/utils/share_utils.dart';
@@ -260,7 +261,7 @@ class _FavDetailPageState extends State<FavDetailPage>
                 ),
               if (BiliUtils.isPublicFav(folderInfo.attr))
                 PopupMenuItem(
-                  onTap: () => showModalBottomSheet(
+                  onTap: () => showEinkSheet(
                     context: context,
                     isScrollControlled: true,
                     useSafeArea: true,

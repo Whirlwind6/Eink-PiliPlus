@@ -18,6 +18,7 @@ import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/bili_utils.dart';
 import 'package:PiliPlus/utils/color_utils.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
@@ -261,7 +262,7 @@ class AuthorPanel extends StatelessWidget {
     } catch (_) {}
     final commentType = item.basic!.commentType;
 
-    showModalBottomSheet(
+    showEinkSheet(
       context: context,
       useSafeArea: true,
       isScrollControlled: true,

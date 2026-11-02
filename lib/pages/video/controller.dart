@@ -53,6 +53,7 @@ import 'package:PiliPlus/plugin/pl_player/models/play_status.dart';
 import 'package:PiliPlus/services/download/download_service.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/connectivity_utils.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/nested_scroll_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
@@ -1468,7 +1469,7 @@ class VideoDetailController extends GetxController
       final targetCid = isUgc ? ugcIntroCtr.seasonCid ?? cid.value : cid.value;
       final index = episodes.indexWhere((e) => e.cid == targetCid);
 
-      showModalBottomSheet(
+      showEinkSheet(
         context: context,
         useSafeArea: true,
         isScrollControlled: true,

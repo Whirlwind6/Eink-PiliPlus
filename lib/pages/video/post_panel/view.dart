@@ -16,6 +16,7 @@ import 'package:PiliPlus/pages/video/controller.dart';
 import 'package:PiliPlus/pages/video/post_panel/popup_menu_text.dart';
 import 'package:PiliPlus/plugin/pl_player/controller.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/platform_utils.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
@@ -153,7 +154,7 @@ class PostPanel extends CommonSlidePage {
                     ),
                   );
                 } else {
-                  res = await showModalBottomSheet<String>(
+                  res = await showEinkSheet<String>(
                     context: context,
                     useSafeArea: true,
                     isScrollControlled: true,

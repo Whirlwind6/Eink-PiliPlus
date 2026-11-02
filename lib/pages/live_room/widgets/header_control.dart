@@ -13,6 +13,7 @@ import 'package:PiliPlus/plugin/pl_player/widgets/common_btn.dart';
 import 'package:PiliPlus/services/shutdown_timer_service.dart'
     show shutdownTimerService;
 import 'package:PiliPlus/utils/android/android_helper.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/extension/string_ext.dart';
@@ -300,7 +301,7 @@ class _LiveHeaderControlState extends State<LiveHeaderControl>
 
   void _showLiveStreamDialog() {
     final controller = widget.liveController;
-    showModalBottomSheet(
+    showEinkSheet(
       context: context,
       useSafeArea: true,
       isScrollControlled: true,

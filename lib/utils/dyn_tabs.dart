@@ -13,6 +13,17 @@ import 'package:PiliPlus/utils/storage_key.dart';
 abstract final class DynTabs {
   static List<DynamicsTabType>? _cache;
 
+  /// 默认标签。
+  ///
+  /// 去掉了「番剧」和「UP」：「番剧」会额外拉一整屏封面图，「UP」只是按 UP 主
+  /// 筛选，两者在墨水屏上都不划算。需要时可在
+  /// 设置 → 动态设置 → 动态标签页 里勾选加回来。
+  static const List<DynamicsTabType> defaultTypes = [
+    DynamicsTabType.all,
+    DynamicsTabType.video,
+    DynamicsTabType.article,
+  ];
+
   /// 当前生效的标签列表（至少一项）
   static List<DynamicsTabType> get list {
     final cached = _cache;
@@ -28,8 +39,16 @@ abstract final class DynTabs {
         }
       }
     }
-    // 没配置过、或配置被清空时回退到默认全量，避免页面没有任何标签
-    if (result.isEmpty) result.addAll(DynamicsTabType.values);
+    // 没配置过、或配置被清空时回退到默认列表，避免页面没有任何标签
+    if (result.isEmpty) {
+      result.addAll(defaultTypes);
+    } else if (result.length == DynamicsTabType.values.length) {
+      // 保存过「全选」等于没裁剪（设置页的默认就是全选），
+      // 这里按默认列表处理，保证「番剧」「UP」默认是关掉的
+      result
+        ..clear()
+        ..addAll(defaultTypes);
+    }
     return _cache = result;
   }
 

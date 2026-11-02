@@ -7,6 +7,7 @@ import 'package:PiliPlus/models_new/dynamic/dyn_topic_top/topic_item.dart';
 import 'package:PiliPlus/pages/dynamics_select_topic/controller.dart';
 import 'package:PiliPlus/pages/dynamics_select_topic/widgets/item.dart';
 import 'package:PiliPlus/pages/search/controller.dart' show DebounceStreamState;
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
 import 'package:get/get.dart';
@@ -27,7 +28,7 @@ class SelectTopicPanel extends StatefulWidget {
     double offset = 0,
     ValueChanged<double>? onCachePos,
   }) {
-    return showModalBottomSheet<TopicItem?>(
+    return showEinkSheet<TopicItem?>(
       context: Get.context!,
       useSafeArea: true,
       isScrollControlled: true,

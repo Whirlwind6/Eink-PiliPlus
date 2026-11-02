@@ -21,6 +21,7 @@ import 'package:PiliPlus/pages/share/view.dart';
 import 'package:PiliPlus/utils/android/android_helper.dart';
 import 'package:PiliPlus/utils/app_scheme.dart';
 import 'package:PiliPlus/utils/eink.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/get_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
@@ -98,7 +99,7 @@ abstract final class PageUtils {
     }
 
     if (context.mounted) {
-      showModalBottomSheet(
+      showEinkSheet(
         context: context,
         builder: (context) => SharePanel(
           content: content,
@@ -161,7 +162,7 @@ abstract final class PageUtils {
     required BuildContext context,
     required FavMixin ctr,
   }) {
-    showModalBottomSheet(
+    showEinkSheet(
       context: context,
       useSafeArea: true,
       isScrollControlled: true,

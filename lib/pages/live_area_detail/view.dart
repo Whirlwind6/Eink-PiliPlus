@@ -9,6 +9,7 @@ import 'package:PiliPlus/pages/live_area_detail/child/controller.dart';
 import 'package:PiliPlus/pages/live_area_detail/child/view.dart';
 import 'package:PiliPlus/pages/live_area_detail/controller.dart';
 import 'package:PiliPlus/pages/live_search/view.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:material_ui/material_ui.dart';
@@ -188,7 +189,7 @@ class _LiveAreaDetailPageState extends State<LiveAreaDetailPage> {
     double bottom,
     List<AreaItem> list,
   ) {
-    showModalBottomSheet(
+    showEinkSheet(
       context: context,
       useSafeArea: true,
       isScrollControlled: true,

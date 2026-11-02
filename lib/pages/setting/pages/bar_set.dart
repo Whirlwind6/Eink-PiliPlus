@@ -27,8 +27,18 @@ class _BarSetPageState extends State<BarSetPage> with ReorderMixin {
     key = args['key'];
     title = args['title'];
     final List? cache = GStorage.setting.get(key);
+    // defaultChecked 用于「默认只勾选一部分」的场景（例如动态标签页默认不含番剧/UP），
+    // 不传时保持原来的行为：没配置过就全选
+    final List? defaultChecked = args['defaultChecked'] as List?;
     list = (args['defaultBars'] as List<EnumWithLabel>)
-        .map((e) => Pair(first: e, second: cache?.contains(e.index) ?? true))
+        .map(
+          (e) => Pair(
+            first: e,
+            second:
+                cache?.contains(e.index) ??
+                (defaultChecked?.contains(e.index) ?? true),
+          ),
+        )
         .toList();
     if (cache != null && cache.isNotEmpty) {
       final cacheIndex = {for (int i = 0; i < cache.length; i++) cache[i]: i};

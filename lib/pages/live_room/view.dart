@@ -35,6 +35,7 @@ import 'package:PiliPlus/plugin/pl_player/utils/fullscreen.dart';
 import 'package:PiliPlus/plugin/pl_player/view/view.dart';
 import 'package:PiliPlus/services/service_locator.dart';
 import 'package:PiliPlus/utils/android/bindings.g.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
 import 'package:PiliPlus/utils/extension/theme_ext.dart';
@@ -563,7 +564,7 @@ class _LiveRoomPageState extends State<LiveRoomPage>
     if (_liveRoomController.ruid case final ruid?) {
       _onPushPopupRoute();
       final heightFactor = PlatformUtils.isMobile && !isPortrait ? 1.0 : 0.7;
-      showModalBottomSheet(
+      showEinkSheet(
         context: context,
         useSafeArea: true,
         clipBehavior: .hardEdge,

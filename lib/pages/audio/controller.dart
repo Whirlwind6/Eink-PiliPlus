@@ -34,6 +34,7 @@ import 'package:PiliPlus/services/shutdown_timer_service.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/android/android_helper.dart';
 import 'package:PiliPlus/utils/connectivity_utils.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/global_data.dart';
@@ -645,7 +646,7 @@ class AudioController extends GetxController
                   :final arc,
                   :final owner,
                 )) {
-                  showModalBottomSheet(
+                  showEinkSheet(
                     context: context,
                     isScrollControlled: true,
                     useSafeArea: true,

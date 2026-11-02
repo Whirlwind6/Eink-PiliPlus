@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:PiliPlus/common/widgets/eink_page_turner.dart';
 import 'package:PiliPlus/common/widgets/flutter/refresh_indicator.dart';
 import 'package:PiliPlus/common/widgets/loading_widget/http_error.dart';
 import 'package:PiliPlus/http/loading_state.dart';
@@ -49,20 +50,30 @@ class _DynamicsTabPageState extends State<DynamicsTabPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return refreshIndicator(
-      onRefresh: onRefresh,
-      child: CustomScrollView(
-        physics: const AlwaysScrollableScrollPhysics(),
-        controller: controller.scrollController,
-        slivers: [
-          SliverPadding(
-            padding: const EdgeInsets.only(bottom: 100),
-            sliver: buildPage(
-              Obx(() => _buildBody(controller.loadingState.value)),
-            ),
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        refreshIndicator(
+          onRefresh: onRefresh,
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            controller: controller.scrollController,
+            slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.only(bottom: 100),
+                sliver: buildPage(
+                  Obx(() => _buildBody(controller.loadingState.value)),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Positioned(
+          right: 10,
+          bottom: 20,
+          child: EinkPageTurner(controller: controller.scrollController),
+        ),
+      ],
     );
   }
 

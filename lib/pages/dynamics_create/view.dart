@@ -28,6 +28,7 @@ import 'package:PiliPlus/pages/emote/controller.dart';
 import 'package:PiliPlus/pages/emote/view.dart';
 import 'package:PiliPlus/utils/accounts.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/grid.dart';
 import 'package:PiliPlus/utils/request_utils.dart';
@@ -73,7 +74,7 @@ class CreateDynPanel extends CommonRichTextPubPage {
     Pair<int, String>? topic,
     ({Object dynId, Object? repostDynId})? editConfig,
     VoidCallback? onSuccess,
-  }) => showModalBottomSheet(
+  }) => showEinkSheet(
     context: context,
     useSafeArea: true,
     isScrollControlled: true,

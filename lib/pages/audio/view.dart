@@ -27,6 +27,7 @@ import 'package:PiliPlus/plugin/pl_player/models/play_repeat.dart';
 import 'package:PiliPlus/services/shutdown_timer_service.dart';
 import 'package:PiliPlus/utils/date_utils.dart';
 import 'package:PiliPlus/utils/duration_utils.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/num_ext.dart';
 import 'package:PiliPlus/utils/extension/size_ext.dart';
@@ -201,7 +202,7 @@ class _AudioPageState extends State<AudioPage> {
       final scrollController = ScrollController(
         initialScrollOffset: initialScrollOffset,
       );
-      showModalBottomSheet(
+      showEinkSheet(
         context: context,
         useSafeArea: true,
         isScrollControlled: true,
@@ -450,7 +451,7 @@ class _AudioPageState extends State<AudioPage> {
   }
 
   void _showPlaySettings() {
-    showModalBottomSheet(
+    showEinkSheet(
       context: context,
       useSafeArea: true,
       isScrollControlled: true,
@@ -582,7 +583,7 @@ class _AudioPageState extends State<AudioPage> {
   }
 
   void _showMore() {
-    showModalBottomSheet(
+    showEinkSheet(
       context: context,
       useSafeArea: true,
       isScrollControlled: true,

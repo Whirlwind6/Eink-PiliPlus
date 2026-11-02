@@ -5,6 +5,7 @@ import 'package:PiliPlus/common/widgets/image/network_img_layer.dart';
 import 'package:PiliPlus/common/widgets/svg/play_icon.dart';
 import 'package:PiliPlus/models/common/badge_type.dart';
 import 'package:PiliPlus/models/dynamics/result.dart';
+import 'package:PiliPlus/utils/eink.dart';
 import 'package:PiliPlus/utils/num_utils.dart';
 import 'package:material_ui/material_ui.dart';
 
@@ -39,13 +40,17 @@ Widget videoSeasonWidget(
   } else {
     padding = EdgeInsets.zero;
   }
+  // 墨水屏不显示封面：与其留一块 16:9 的灰块占位置，不如整块去掉，
+  // 把时长、播放量压成一行小字，列表能多显示将近一倍的动态
+  final bool hideCover = Eink.hideCover;
+  final cover = hideCover ? null : video.cover;
   return Padding(
     padding: padding,
     child: Column(
       spacing: 6,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (video.cover case final cover?)
+        if (cover != null)
           Stack(
             clipBehavior: Clip.none,
             children: [
@@ -127,7 +132,30 @@ Widget videoSeasonWidget(
             style: const TextStyle(fontWeight: FontWeight.bold),
             overflow: isDetail ? null : TextOverflow.ellipsis,
           ),
+        if (hideCover) _einkMetaLine(theme, video),
       ],
+    ),
+  );
+}
+
+/// 隐藏封面后补的一行文字信息，保证时长 / 播放量不丢
+Widget _einkMetaLine(ThemeData theme, DynamicArchiveModel video) {
+  final items = <String>[
+    if (video.badge?.text case final badge?) badge,
+    if (video.durationText case final durationText?) durationText,
+    if (video.stat case final stat?) '${NumUtils.numFormat(stat.play)}播放',
+    if (video.stat case final stat?) '${NumUtils.numFormat(stat.danmu)}弹幕',
+  ];
+  if (items.isEmpty) {
+    return const SizedBox.shrink();
+  }
+  return Text(
+    items.join(' · '),
+    maxLines: 1,
+    overflow: TextOverflow.ellipsis,
+    style: TextStyle(
+      fontSize: theme.textTheme.labelMedium!.fontSize,
+      color: theme.colorScheme.outline,
     ),
   );
 }

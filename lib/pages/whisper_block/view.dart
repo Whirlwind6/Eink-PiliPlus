@@ -8,6 +8,7 @@ import 'package:PiliPlus/grpc/bilibili/app/im/v1.pb.dart'
 import 'package:PiliPlus/http/loading_state.dart';
 import 'package:PiliPlus/pages/search/widgets/search_text.dart';
 import 'package:PiliPlus/pages/whisper_block/controller.dart';
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:flutter/services.dart' show LengthLimitingTextInputFormatter;
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -150,7 +151,7 @@ class _WhisperBlockPageState extends State<WhisperBlockPage> {
 
   void _onAdd() {
     String keyword = '';
-    showModalBottomSheet(
+    showEinkSheet(
       context: context,
       enableDrag: false,
       useSafeArea: true,

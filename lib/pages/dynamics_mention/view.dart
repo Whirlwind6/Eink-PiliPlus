@@ -12,6 +12,7 @@ import 'package:PiliPlus/models_new/dynamic/dyn_mention/item.dart';
 import 'package:PiliPlus/pages/dynamics_mention/controller.dart';
 import 'package:PiliPlus/pages/dynamics_mention/widgets/item.dart';
 import 'package:PiliPlus/pages/search/controller.dart' show DebounceStreamState;
+import 'package:PiliPlus/utils/eink_sheet.dart';
 import 'package:PiliPlus/utils/extension/context_ext.dart';
 import 'package:PiliPlus/utils/extension/iterable_ext.dart';
 import 'package:PiliPlus/utils/extension/scroll_controller_ext.dart';
@@ -36,7 +37,7 @@ class DynMentionPanel extends StatefulWidget {
     ValueChanged<double>? onCachePos,
     MentionItem? top,
   }) {
-    return showModalBottomSheet(
+    return showEinkSheet(
       context: Get.context!,
       useSafeArea: true,
       isScrollControlled: true,
